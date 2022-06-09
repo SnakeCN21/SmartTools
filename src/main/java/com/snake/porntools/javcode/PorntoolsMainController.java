@@ -6,10 +6,12 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class MainController {
-    private static final Logger logger = LoggerFactory.getLogger(MainController.class);
+public class PorntoolsMainController {
+    private static final Logger logger = LoggerFactory.getLogger(PorntoolsMainController.class);
 
     public static void main(String[] args) {
+        logger.info("开始执行 PorntoolsMainController...");
+
         CheckJavStatusController checkJavStatusController = new CheckJavStatusController();
 
         try {

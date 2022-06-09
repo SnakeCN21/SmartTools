@@ -1,4 +1,4 @@
-package com.snake.porntools.utils;
+package com.snake.utils;
 
 import okhttp3.Call;
 import okhttp3.OkHttpClient;
@@ -12,9 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
@@ -28,7 +26,6 @@ public class HttpClientUtils {
             .writeTimeout(300, TimeUnit.SECONDS)
             .build();
     private String resourceStatus;
-
 
     /**
      * 请求 Http Request
@@ -71,7 +68,7 @@ public class HttpClientUtils {
                 html = response.body().string();
             }
         } catch (IOException e) {
-            logger.debug(e.getMessage(), e);
+            logger.debug("HTTP 请求失败. URL = " + url, e);
         } finally {
             if (response != null) {
                 response.close();
@@ -101,27 +98,31 @@ public class HttpClientUtils {
         if (!html.isEmpty()) {
             //1.使用 parse() 将 html 解析为 document 对象
             Document document = Jsoup.parse(html);
-            //2.使用 getElementsByClass() 获取所有的影片 <div>
-            Elements allDivs = document.getElementsByClass("grid-item");
 
-            if (!allDivs.isEmpty()) {
-                for (Element div : allDivs) {
-                    Elements a = div.getElementsByTag("a");
+            Elements body = document.getElementsByTag("body");
+            Elements section = body.first().getElementsByClass("section");
+            Elements container = section.first().getElementsByClass("container");
+            Elements movieList = container.first().getElementsByClass("movie-list");
+
+            if (!movieList.isEmpty()) {
+                Elements movieListChildren = movieList.first().children();
+
+                for (Element item : movieListChildren) {
+                    Elements videoTitle = item.getElementsByClass("video-title");
+                    Elements uidCode = videoTitle.first().getElementsByTag("strong");
 
                     // 获取影片的 uid
-                    Elements uid = a.first().getElementsByClass("uid");
+                    String uid = uidCode.first().text();
                     // 获取影片的 发布日期
-                    Elements meta = a.first().getElementsByClass("meta");
+                    Elements meta = item.getElementsByClass("meta");
 
                     if (!uid.isEmpty()) {
-                        String uidCode = uid.text();
-
                         // 判断当前选中的 Element 的 uid 是不是正是我们要找的
-                        if (javCode.equalsIgnoreCase(uidCode)) {
+                        if (javCode.equalsIgnoreCase(uid)) {
                             releaseDate = meta.text().trim();
 
                             // 获取影片的附加信息
-                            Elements addons = a.first().getElementsByClass("has-addons");
+                            Elements addons = item.getElementsByClass("has-addons");
 
                             if (!addons.isEmpty()) {
                                 Elements isDownloadableSpan = addons.first().getElementsByClass(Constants.DOWNLOADABLE_SPAN_TAG);

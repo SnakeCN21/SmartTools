@@ -1,4 +1,4 @@
-package com.snake.porntools.utils;
+package com.snake.utils;
 
 
 import org.slf4j.Logger;

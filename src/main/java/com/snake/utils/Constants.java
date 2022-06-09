@@ -1,4 +1,4 @@
-package com.snake.porntools.utils;
+package com.snake.utils;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +17,14 @@ public class Constants {
     public static final String LEFT_PARENTHESES = "(";
     public static final String RIGHT_PARENTHESES = ")";
 
+    public static final String CARRIAGE_RETURN_TO_LINE = "\r\n";
+
+    public static final String HTTP_RESPONSE_CODE_000 = "000";
+    public static final String HTTP_RESPONSE_CODE_200 = "200";
+    public static final String HTTP_RESPONSE_CODE_400 = "400";
+    public static final String HTTP_RESPONSE_CODE_404 = "404";
+
+    /******************************************************* Porntools start *******************************************************/
     public static final String JAV_CODE = "jav_code";
 
     public static final String JAVDB_URL = "https://javdb.com/search?q=jav_code&f=all";
@@ -28,8 +36,12 @@ public class Constants {
         put("cookie", "theme=auto; locale=zh; over18=1; _jdb_session=k1TjZv98k7ehpdrbWgYsaTDq%2FFV4TDV60caoU5kqJ150hY9N%2BmKHwPZUzIKVcFyhES%2Fg2rR8%2FslXMnPiBmUwriHOGkVuZzaUK%2BJ4uL93npGPYUdqbKSx1OnccElFEZlXgMUWQ%2Bh6L%2F85QTPBFIKDheUGRoHPIKdrDOb9qyw9Qo91gASNOYA7o7Q4WSNij0xBsVTdUAdlb2UAZrUMDgKl2i%2BHuZI7ZTH6pa0i501zS%2BL4b3pecQTBCC0KUvt%2BrbrKA6lUyAcC%2BHvUlzCqJh7y0PlqbNIW1LIfszSlXvBARFqTdKHbLLuLFvglreen4TWEdkzmv0gdmDbwQDDdjJlYInMGFFoMnetgW7Q7OzetMPCqQLvW82M9ykPE7S3hVFBtSOY%3D--dz5k%2Fq1Mp2WC1Lx8--%2FsuF1iV0bxV7XUfPkivIPg%3D%3D");
     }};
 
-    // 每轮 Http 请求间隔休息的时间, 单位: s
-    public static final int HTTP_REQUEST_SLEEP_TIME = 3;
+    // 每轮 Http 请求间隔固定休息的时间, 单位: s
+    public static final int HTTP_REQUEST_SLEEP_TIME = 5;
+    // 每轮 Http 请求间隔最短休息的时间, 单位: s
+    public static final int HTTP_REQUEST_MIN_SLEEP_TIME = 2;
+    // 每轮 Http 请求间隔随机休息的时间, 单位: s
+    public static final int HTTP_REQUEST_RANDOM_SLEEP_TIME = 5;
 
     public static final String HTML = "html";
     public static final String MESSAGE = "message";
@@ -38,11 +50,6 @@ public class Constants {
     public static final String DUPLICATE_JAV_CODE_LIST = "duplicateJavCodeList";
     public static final String DOWNLOADABLE_JAV_CODE_LIST = "downloadableJavCodeList";
     public static final String CHINESE_SUBTITLES_JAV_CODE_LIST = "chineseSubtitlesJavCodeList";
-
-    public static final String HTTP_RESPONSE_CODE_000 = "000";
-    public static final String HTTP_RESPONSE_CODE_200 = "200";
-    public static final String HTTP_RESPONSE_CODE_400 = "400";
-    public static final String HTTP_RESPONSE_CODE_404 = "404";
 
     // 判断当前影片的 <资源状态>
     // 含中字磁鏈: is-warning
@@ -60,6 +67,6 @@ public class Constants {
     public static final String NO_RESOURCES = "0";
     public static final String HAS_DOWNLOAD_RESOURCES = "1";
     public static final String HAS_CHINESE_SUBTITLES_RESOURCES = "2";
+    /******************************************************* Porntools end *******************************************************/
 
-    public static final String CARRIAGE_RETURN_TO_LINE = "\r\n";
 }

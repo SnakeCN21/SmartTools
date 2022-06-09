@@ -1,369 +1,265 @@
-1PONDO_022114_759   中文字幕
+1PONDO_022114_759   1280 * 720, 中文字幕
+ABP-357             中文字幕
+ABP-389             中文字幕
+ABP-518             中文字幕
+ABP-524             中文字幕
+ABP-587             中文字幕
+ABP-596             中文字幕
+ABP-613             中文字幕
+ABP-625             中文字幕
+ABP-640             中文字幕
+ABP-676             中文字幕
+ABW-087             1280 * 720
+ABW-133             中文字幕
+ABW-137             中文字幕
+ABW-184             中文字幕
+ABW-205             中文字幕
+APGH-001            中文字幕
+ARA-510             中文字幕
+BGN-066             中文字幕
+BOBB-254            中文字幕
+CARIB_092113-437    中文字幕
+CARIB 112021-001    中文字幕
+CHRV-067            中文字幕
+CLUB-180            中文字幕
+CLUB-419            中文字幕
+CJOD-322            中文字幕
+CJOD-328            中文字幕
+CJOD-338            中文字幕
+CMD-026             中文字幕
+DCV-155             中文字幕
+DIY-100             856 * 480, 去水印
+DTT-051             中文字幕
+FAA-219             中文字幕, 分辨率低
+FC2-858528          中文字幕
+FC2-999863          中文字幕
+FC2-1040071         中文字幕
+FSDSS-374           中文字幕
+HEYZO-0505          中文字幕
+IPX-686             中文字幕
+IPX-823             中文字幕
+IPZ-207             中文字幕
+JAN-005             720 * 406, 中文字幕
+JAN-020             中文字幕
+JUFD-621            中文字幕
+JUFE-115            中文字幕
+JUFE-245            中文字幕
+JUFE-271            中文字幕
+JUFE-368            中文字幕
+JUL-404             中文字幕
+KAM-100             中文字幕
+KATU-094            中文字幕
+KATU-041            中文字幕
+KATU-062            中文字幕
+KNMB-011            中文字幕
+LULU-109            中文字幕
 LUXU-942            中文字幕
 LUXU-943            中文字幕
 LUXU-948            中文字幕
 LUXU-950            中文字幕
 LUXU-1023           中文字幕
 LUXU-1041           中文字幕
-LUXU-1170           中文字幕, 分辨率低
-MAAN-579            中文字幕, 分辨率低
-MIUM-537            分辨率低
-NTR-012             中文字幕, 分辨率低
-ABP-524             中文字幕
-ABP-557             中文字幕(无码)
-ABP-676             中文字幕
-ABP-818             没声音
-APGH-001            中文字幕
-ABW-023             中文字幕
-BBI-173             中文字幕
-BF-236              中文字幕, 分辨率低
-BOBB-254            中文字幕
-CARIB_092113-437    中文字幕
-CARIB 112021-001    中文字幕
-CHRV-067            中文字幕
-CLUB-180            中文字幕
-CLUB-221            分辨率低
-CMD-026             中文字幕
-DIY-100             分辨率低
-FAA-219             中文字幕, 分辨率低
-FC2-858528          中文字幕
-FC2-999863          中文字幕
-FC2-1040071         中文字幕
-FC2-1245249         中文字幕
-FSDSS-079           中文字幕
-FSDSS-186           中文字幕
-FSDSS-234           中文字幕
-HEYZO-0505          中文字幕
-IENE-500            中文字幕, 分辨率低
-IPZ-207             中文字幕
-JAN-005             中文字幕, 分辨率低
-JAN-020             中文字幕
-JUFD-621            中文字幕
-JUFE-115            中文字幕
-JUFE-282            中文字幕
-JUFE-245            中文字幕
-JUL-404             中文字幕
-JUY-652             中文字幕
-JUY-949             中文字幕
-KBI-024             中文字幕
-KKBW-003            中文字幕, 分辨率低
-LUXU-1407           中文字幕
+LUXU-1170           1280 * 720, 中文字幕, 去水印
+LUXU-1324           1280 * 720
+LUXU-1407           1280 * 720
 LXVS-018(LUXU-457)  中文字幕
 LXVS-044(LUXU-873)  中文字幕
+MAAN-579            1280 * 720, 中文字幕
+MIAA-500            中文字幕
 MIAD-794            中文字幕
-MIDD-685            中文字幕, 分辨率低
+MIDD-685            720 * 396, 中文字幕
 MIDE-476            中文字幕
-MIDE-612            中文字幕
+MIDE-612            中文字幕, 去水印
 MIDE-925            中文字幕
 MIDE-941            中文字幕
+MIDE-951            中文字幕
+MIDE-963            中文字幕
 MMND-128            中文字幕
-MSFH-010            中文字幕(无码)
+MSFH-002            中文字幕
 MSFH-014            中文字幕
 MVSD-396            中文字幕
-MVSD-447            中文字幕
+MVSD-466            中文字幕
 NHDTA-662           中文字幕
 NHDTB-171           中文字幕
+NTR-012             1280 * 720, 中文字幕, 分辨率低
+ORE-754             1280 * 720
 PGD-795             中文字幕
+PKPD-141            中文字幕
+PPPE-005            中文字幕
 PPT-062             中文字幕
 PRED-121            中文字幕
-PRED-356            中文字幕(4K)
+PRED-352            中文字幕
+PRED-368            中文字幕
 REAL-723            中文字幕
-SAMA-884            中文字幕, 分辨率低
-SDJS-028            中文字幕(无码)
+SAMA-884            720 * 396, 中文字幕
 SGA-113             中文字幕
-SHYN-102            中文字幕(无码)
+SHH-038             中文字幕
 SOE-982             中文字幕
-SSIS-020            中文字幕
-STAR-577            中文字幕
-STAR-927            中文字幕(无码)
-STARS-035           中文字幕(无码)
-STARS-043           中文字幕(无码)
-STARS-118           中文字幕(无码)
-STARS-229           中文字幕(无码)
-STARS-247           中文字幕(无码)
-STARS-258           中文字幕(无码)
+SSIS-005            中文字幕
+SSIS-059            中文字幕
+SSIS-139            中文字幕
+SSIS-177            中文字幕
+STARS-061           中文字幕
+STARS-072           中文字幕
+STARS-105           中文字幕
 STARS-316           中文字幕
-STARS-359           中文字幕
-STARS-448           中文字幕, 有水印
-SVDVD-739           中文字幕(无码)
+STARS-448           中文字幕, 去水印
 TIKB-116            中文字幕
-URPW-011            中文字幕, 分辨率低
+TOTTE-045           中文字幕
+URPW-011            720 * 406, 中文字幕
 URPW-042            中文字幕
+VENU-929            去水印
+WAAA-144            中文字幕
 XVSR-552            中文字幕
 YAHO-012            中文字幕
 YST-144             中文字幕
 
 =============期待==============
-AARM-060
-ABW-121
-ABW-133
-ABW-137
-ABW-146
-ABW-153
-ABW-163
-ABW-164
-ABW-166
-ABW-167
-ABW-174
-ABW-180
-ABW-182
-ABW-188
-ABW-192
-ABW-196
-APAK-210
-AQSH-072
-BAVC-006
-BBAN-341
-BACN-032
-BF-649
-BF-655
-BGN-063
-BGN-066
-BLK-534
-CAWD-269
-CAWD-287
-CAWD-292
-CAWD-304
-CEFD-002
-CEMD-089
-CEMD-125
-CEMD-130
-CJOD-296
-CJOD-308
-CJOD-320
-CJOD-322
-CJOD-326
-CJOD-328
-CLUB-669
-COGM-005
-DASD-910
-DASD-954
-DCV-199
-DDFF-020
-DDH-064
-DDH-067
-DGCEMD-117
-DGCEMD-128
-DLDSS-023
-DLDSS-051
-DKD-007
-DOCP-343
-DTT-098
-EBOD-857
+AARM-070
+AARM-071
+ABW-214
+ABW-215
+ABW-217
+ABW-221
+ABW-222
+ADN-396
+ADN-397
+AKA-072
+APAK-220
+APAK-223
+APAK-224
+APNS-283
+ARA-531
+ARA-532
+ARA-533
+ARA-535
+ATID-510
+AVSA-198
+AVSW-062
+CAWD-365
+CEMD-147
+CEMD-162
+CLUB-679
+CRNX-052
+DASD-991
+DLDSS-059
+DLDSS-066
+DLDSS-069
+DVDMS-788
+DVDMS-818
+DVDMS-996
+DTT-099
+EBOD-898
+ECB-153
+ENE-006
+EROFC-035
+EROFC-062
 ETQR-251
 ETQR-255
 ETQR-280
-EVA-166
-FANH-061
+EYAN-184
+FANH-098
 FC2-1156360
-FCDSS-013
-FLAV-288
-FLAV-290
-FSDSS-022
-FSDSS-152
-FSDSS-275
-FSDSS-303
-FSDSS-320
-FSDSS-337
-FSDSS-344
-FSDSS-353
-FSDSS-358
-FSDSS-363
-FSDSS-366
-FSDSS-369
-GANA-2624
-GANA-2627
-GANA-2641
-GCB-014
-GENM-100
-GMBM-006
-GVH-325
-GVH-357
-HMN-010
-HMN-041
-HMN-088
-HMN-098
-HMN-111
-HND-896
-HODV-21650
-HUNTB-152
-HUNTB-171
-HZGD-190
-ILLE-005
-IPX-560
-IPX-624
-IPX-655
-IPX-686
-IPX-698
-IPX-721
-IPX-759
-IPX-762
-IPX-803
-IPX-813
-IZM-003
-JAC-119
-JJDA-019
-JUFE-271
-JUFE-324
-JUFE-348
-JUFE-349
-JUFE-351
-JUFE-357
-JUFE-366
-JUFE-368
-JUL-690
-JUL-748
-JUL-775
-JUL-801
-KATU-092
-KATU-094
-KBI-069
-KTKC-135
-LULU-086
-LULU-119
-LULU-124
-LUXU-1468
-LUXU-1473
-LUXU-1496
-LUXU-1547
-LZDM-047
-IMGN-031
-MAAN-651
-MAAN-717
-MAAN-736
-MAAN-744
-MDBK-211
-MEYD-703
-MEYD-740
+FLAV-296
+FSDSS-392
+FSDSS-409
+FSDSS-416
+GANA-2662
+GANA-2691
+GENM-102
+HDKA-261
+HMN-153
+HODV-21662
+HOMA-116
+ILLE-009
+IPX-859
+IPX-861
+JAC-125
+JAC-133
+JUFE-379
+JUFE-391
+JUL-936
+JUNY-060
+KATU-098
+KBI-076
+KIRE-070
+KYMI-021
+LUXU-1521
+LUXU-1563
+LZDM-048
+LZDM-049
+INST-145
+MCSR-479
 MFC-110
-MFC-133
-MFC-179
+MFC-184
+MFC-186
 MFCS-004
-MIAA-475
-MIAA-496
-MIAA-510
-MIAA-568
-MIAA-574
-MIDE-961
-MIDE-963
-MIDE-974
-MIDE-989
-MIDE-990
-MIDV-006
-MIDV-025
-MIFD-131
-MIFD-173
-MIFD-185
-MILK-134
-MISM-221
-MISM-228
-MIUM-299
-MIUM-777
-MIUM-793
-MIZD-979
-MKON-072
-MKON-073
-MMKS-020
-MMKZ-072
-MOPP-050
-MSFH-035
-MTALL-002
-MTALL-003
-MTALL-007
-MTALL-010
-MTALL-012
-MVSD-483
-MVSD-485
-MVSD-487
-NACR-059
-NHDTB-626
-NTK-688
-PPPD-966
-PPPD-975
-PPPD-985
+MFCS-013
+MGMJ-055
+MIAA-583
+MIAA-613
+MIAA-656
+MIDV-076
+MIDV-097
+MIDV-099
+MIUM-806
+MIUM-813
+MIUM-833
+MOND-229
+MVSD-504
+NACR-519
+NACR-521
+NTK-698
+NTK-710
+NTRD-102
+NYH-151
+ORE-831
+PAK-004
+PAK-005
+PFES-056
 PPPE-005
-PRED-352
-PRED-368
-PRED-375
-PXH-038
-PXH-039
-PXH-040
-RBK-019
-RCTD-440
-RCTD-441
-ROYD-074
-ROYD-078
-SAN-036
-SAN-037
-SDDE-658
-SENN-016
-SGA-151
-SIRO-4582
-SIRO-4748
-SIRO-4793
-SKMJ-246
-SQTE-397
-SQTE-400
-SSIS-046
-SSIS-192
-SSIS-222
-SSIS-232
-SSIS-252
-SSIS-286
-SSIS-320
-STARS-132
-STARS-361
-STARS-420
-STARS-421
-STARS-436
-STARS-459
-STARS-481
-STARS-485
-STARS-494
-STARS-501
-STARS-512
+PPPE-036
+PPZ-006
+PRED-396
+PRED-401
+SAN-045
+SAN-049
+SAN-052
+SAN-053
+SDDE-665
+SDMM-110
+SDMU-979
+SDMU-984
+SDMU-988
+SDNM-333
+SIRO-4836
+SORA-378
+SQTE-415
+SSIS-310
+SSIS-346
+SSIS-368
 STARS-519
-STCV-055
-SVDVD-896
+STARS-521
+STARS-537
+STARS-548
+STARS-564
+STARS-573
+STARS-577
+STARS-590
+STARS-604
+STARS-638
+SUKE-112
+SUKE-113
 TG-033
-URKK-046
-URKK-054
-VEC-514
-WAAA-090
-WAAA-094
-WAAA-143
-WAAA-144
-WAAA-148
-WAAA-149
-WKD-043
-WKD-044
-YMDD-263
-
-ABP-933         中文
-MIDE-951        中文
-SSIS-059        中文
-SSIS-091        中文
-GVH-287         中文
-SSIS-139        中文
-ORE-754         分辨率
-ABW-087         分辨率
-ABW-107         分辨率
-ABW-114         分辨率
-STARS-061       中文
-SSNI-502        中文
-STARS-052       中文
-MIUM-752        中文
-SPRD-1355       中文
-FSDSS-287       分辨率有划痕
-IPX-014         中文有?
-FC2-2503951     优优
-JUFE-335        中文
-STARS-049       中文
-STARS-072       中文
-STARS-092       中文
-STARS-105       中文
-MIDE-785        中文
-SSIS-211        中文(4K)
-msfh-002        中文
-miaa-500        中文
-LULU-109        中文
+TKK-013
+TPPN-221
+URE-078
+URKK-057
+VEC-530
+WAAA-161
+WAAA-164
+WAAA-167
+WKD-052
+WZEN-056
+XMOM-042
+YSN-572

@@ -1,9 +1,9 @@
 package com.snake.porntools.javcode.controller;
 
-import com.snake.porntools.utils.Constants;
-import com.snake.porntools.utils.HttpClientUtils;
-import com.snake.porntools.utils.TxtWriterUtils;
-import com.snake.porntools.utils.Utils;
+import com.snake.utils.Constants;
+import com.snake.utils.HttpClientUtils;
+import com.snake.utils.TxtWriterUtils;
+import com.snake.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,7 +33,7 @@ public class CheckJavStatusController {
         logger.info("开始执行 CheckJavStatusController.taskStart()...");
         long startTime = System.nanoTime();
 
-        File file = new File(new Utils().getPropValues("input_javcode_file")); //设定为当前文件夹
+        File file = new File(new Utils().getPropValue("input_javcode_file")); //设定为当前文件夹
 
         if (!file.exists()) {
             logger.info(file.getAbsolutePath() + " 文件不存在.");
@@ -69,7 +69,8 @@ public class CheckJavStatusController {
                             }
                         }
 
-                        Thread.sleep(Constants.HTTP_REQUEST_SLEEP_TIME * 1000);
+                        //Thread.sleep(Constants.HTTP_REQUEST_SLEEP_TIME * 1000);
+                        Thread.sleep((new Random().nextInt(Constants.HTTP_REQUEST_RANDOM_SLEEP_TIME) + Constants.HTTP_REQUEST_MIN_SLEEP_TIME) * 1000);
                     }
                 }
             } catch (Exception e) {
@@ -84,7 +85,9 @@ public class CheckJavStatusController {
             javsMap.put(Constants.DOWNLOADABLE_JAV_CODE_LIST, new Utils().collectionDeduplicateAndResort(downloadableJavCodeList));
             javsMap.put(Constants.CHINESE_SUBTITLES_JAV_CODE_LIST, new Utils().collectionDeduplicateAndResort(chineseSubtitlesJavCodeList));
 
-            new TxtWriterUtils().txtWriter(new Utils().getPropValues("export_javcode_file"), javsMap);
+            new TxtWriterUtils().txtWriter(new Utils().getPropValue("export_javcode_file"), javsMap);
+        } else {
+            logger.info("\"JavCode 检测结果.txt\" 没有任何内容写入!");
         }
 
         logger.info("CheckJavStatusController.taskStart() 总用时: " + new Utils().calculatingTimeDiff(System.nanoTime() - startTime));

@@ -1,4 +1,4 @@
-package com.snake.porntools.utils;
+package com.snake.utils;
 
 import com.sun.deploy.util.SessionState;
 import org.slf4j.Logger;
@@ -21,7 +21,7 @@ public class Utils {
      *
      * @return value
      */
-    public String getPropValues(String key) {
+    public String getPropValue(String key) {
         String value = "";
         Properties props = new Properties();
 
@@ -187,7 +187,7 @@ public class Utils {
      */
     public int isReleaseDateOverFilter(String date) {
         LocalDate releaseDate = LocalDate.parse(date);
-        String releaseDateFilter = this.getPropValues("release_date_filter").toUpperCase(Locale.ROOT);
+        String releaseDateFilter = this.getPropValue("release_date_filter").toUpperCase(Locale.ROOT);
         String[] str = releaseDateFilter.split(Constants.HYPHEN);
 
         for (String filter : str) {
