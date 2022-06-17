@@ -1,9 +1,6 @@
 package com.snake.utils;
 
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import okhttp3.*;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -35,26 +32,43 @@ public class HttpClientUtils {
      *
      * @return Map<String, String> - key: responseCode - HTTP状态码; key: html - Http 返回的 html 页面
      */
-    public Map<String, String> getHTML(String url, Map<String, String> headers) {
+    public Map<String, String> getHTML(String url, Map<String, String> headers, Map<String, String> formBody) {
         Map<String, String> map = new HashMap<String, String>();
 
         String responseCode = Constants.HTTP_RESPONSE_CODE_200;
         String html = "";
 
+        RequestBody requestBody = null;
+        Request request = null;
+
         Response response = null;
 
         try {
-            Request.Builder builder = new Request.Builder().url(url);
+            FormBody.Builder requestBodyBuilder = new FormBody.Builder();
+            if (!formBody.isEmpty()) {
+                for (Map.Entry<String, String> entry : formBody.entrySet()) {
+                    //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 
+                    requestBodyBuilder.add(entry.getKey(), entry.getValue());
+                }
+
+                requestBody = requestBodyBuilder.build();
+            }
+
+            Request.Builder requestBuilder = new Request.Builder().url(url);
             if (!headers.isEmpty()) {
                 for (Map.Entry<String, String> entry : headers.entrySet()) {
                     //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
 
-                    builder.addHeader(entry.getKey(), entry.getValue());
+                    requestBuilder.addHeader(entry.getKey(), entry.getValue());
                 }
             }
 
-            Request request = builder.build();
+            if (requestBody == null) {
+                request = requestBuilder.build();
+            } else {
+                request = requestBuilder.post(requestBody).build();
+            }
 
             Call call = okHttpClient.newCall(request);
 

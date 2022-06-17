@@ -46,7 +46,7 @@ public class CheckJavStatusController {
                     for (String javCode : javCodeList) {
                         String url = Constants.JAVDB_URL.replace(Constants.JAV_CODE, javCode);
 
-                        Map<String, String> htmlMap = new HttpClientUtils().getHTML(url, Constants.JAVDB_HEADERS);
+                        Map<String, String> htmlMap = new HttpClientUtils().getHTML(url, Constants.JAVDB_HEADERS, new HashMap<>());
 
                         String responseCode = htmlMap.get(Constants.RESPONSE_CODE);
 

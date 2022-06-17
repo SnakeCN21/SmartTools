@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Constants {
-    public static final String PROP_FILE_NAME = "config.properties";
+    public static final String PROP_FILE_NAME = "src/main/resources/config.properties";
 
     public static final String FILE_SEPARATOR = "/";
 
@@ -68,5 +68,13 @@ public class Constants {
     public static final String HAS_DOWNLOAD_RESOURCES = "1";
     public static final String HAS_CHINESE_SUBTITLES_RESOURCES = "2";
     /******************************************************* Porntools end *******************************************************/
+
+    /******************************************************* Weather start *******************************************************/
+    public static final String CITY_NAME = "city_name";
+    public static final String WEATHER_KEY = "weather_key";
+
+    public static final String WEATHER_QUERY_URL = "http://apis.juhe.cn/simpleWeather/query?city=city_name&key=weather_key";
+
+    /******************************************************* Weather end *******************************************************/
 
 }

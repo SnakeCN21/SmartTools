@@ -1,11 +1,13 @@
 package com.snake.utils;
 
-import com.sun.deploy.util.SessionState;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.util.*;
@@ -26,7 +28,8 @@ public class Utils {
         Properties props = new Properties();
 
         try {
-            props.load(new InputStreamReader(SessionState.Client.class.getClassLoader().getResourceAsStream(Constants.PROP_FILE_NAME), "utf-8"));
+            FileInputStream input = new FileInputStream(new File(Constants.PROP_FILE_NAME));
+            props.load(new InputStreamReader(input, Charset.forName("UTF-8")));
 
             value = props.getProperty(key);
         } catch (IOException e) {
@@ -50,7 +53,8 @@ public class Utils {
         Properties props = new Properties();
 
         try {
-            props.load(new InputStreamReader(SessionState.Client.class.getClassLoader().getResourceAsStream(Constants.PROP_FILE_NAME), "utf-8"));
+            FileInputStream input = new FileInputStream(new File(Constants.PROP_FILE_NAME));
+            props.load(new InputStreamReader(input, Charset.forName("UTF-8")));
 
             value = props.getProperty(key);
             String[] valueLists = value.split(";");
