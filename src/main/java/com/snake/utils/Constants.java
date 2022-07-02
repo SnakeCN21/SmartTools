@@ -7,6 +7,7 @@ public class Constants {
     public static final String PROP_FILE_NAME = "src/main/resources/config.properties";
 
     public static final String FILE_SEPARATOR = "/";
+    public static final String DOT = ".";
 
     public static final String SPACE_SEPARATOR = " ";
 
@@ -18,6 +19,13 @@ public class Constants {
     public static final String RIGHT_PARENTHESES = ")";
 
     public static final String CARRIAGE_RETURN_TO_LINE = "\r\n";
+
+    public static final String ID = "id";
+    public static final String Y = "y";
+    public static final String X = "x";
+
+    public static final String GUEST = "Guest";
+    public static final String HOST = "Host";
 
     public static final String HTTP_RESPONSE_CODE_000 = "000";
     public static final String HTTP_RESPONSE_CODE_200 = "200";

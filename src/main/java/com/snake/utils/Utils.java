@@ -70,6 +70,28 @@ public class Utils {
     }
 
     /**
+     * 在文件名最后添加一个后缀
+     *
+     * @param fullName - 完整的文件名(不包含文件路径, 但可能包含文件扩展名)
+     * @param suffix - 需要添加的后缀
+     * @return
+     */
+    public String appendNameSuffix(String fullName, String suffix) {
+        String newName = "";
+
+        if (fullName.contains(Constants.DOT)) {
+            String name = fullName.substring(0, fullName.lastIndexOf(Constants.DOT));
+            String extension = fullName.substring(fullName.lastIndexOf(Constants.DOT) + 1);
+
+            newName = name + suffix + Constants.DOT + extension;
+        } else {
+            newName = fullName + suffix;
+        }
+
+        return newName;
+    }
+
+    /**
      * 将 long 类型的时间格式转换成可读性更高的时间格式
      * timeDiff 是基于 System.nanoTime() 计算出来的
      *
