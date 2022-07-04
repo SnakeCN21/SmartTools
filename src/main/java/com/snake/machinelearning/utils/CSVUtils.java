@@ -146,13 +146,13 @@ public class CSVUtils {
 
         try {
             fileWriter = new FileWriter(fileName);
-            csvWriter = new CSVWriter(fileWriter);
+            csvWriter = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
 
             int headerLength = records.get(0).length;
 
             // 写入 header
             String[] header = new String[headerLength];
-            header[0] = Constants.ID;
+            header[0] = Constants.ID.replace("\"", "");
             header[1] = Constants.Y;
 
             for (int i=2; i<headerLength; i++) {
@@ -295,7 +295,7 @@ public class CSVUtils {
             csvReader = new CSVReader(fileReader);
 
             fileWriter = new FileWriter(outputFileName);
-            csvWriter = new CSVWriter(fileWriter);
+            csvWriter = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
 
             List<String[]> records = csvReader.readAll();
             int recordSize = records.size();
