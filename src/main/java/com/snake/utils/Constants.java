@@ -20,12 +20,16 @@ public class Constants {
 
     public static final String CARRIAGE_RETURN_TO_LINE = "\r\n";
 
-    public static final String ID = "id";
-    public static final String Y = "y";
-    public static final String X = "x";
+    public static final String FEATURE_ID = "id";
+    public static final String FEATURE_Y = "y";
+    public static final String FEATURE_X = "x";
 
-    public static final String GUEST = "Guest";
-    public static final String HOST = "Host";
+    public static final String ROLE_GUEST = "Guest";
+    public static final String ROLE_HOST = "Host";
+
+    public static final String MESSAGE = "message";
+    public static final String RESPONSE_CODE = "responseCode";
+    public static final String HTML = "html";
 
     public static final String HTTP_RESPONSE_CODE_000 = "000";
     public static final String HTTP_RESPONSE_CODE_200 = "200";
@@ -50,10 +54,6 @@ public class Constants {
     public static final int HTTP_REQUEST_MIN_SLEEP_TIME = 2;
     // 每轮 Http 请求间隔随机休息的时间, 单位: s
     public static final int HTTP_REQUEST_RANDOM_SLEEP_TIME = 5;
-
-    public static final String HTML = "html";
-    public static final String MESSAGE = "message";
-    public static final String RESPONSE_CODE = "responseCode";
 
     public static final String DUPLICATE_JAV_CODE_LIST = "duplicateJavCodeList";
     public static final String DOWNLOADABLE_JAV_CODE_LIST = "downloadableJavCodeList";

@@ -1,7 +1,6 @@
 package com.snake.weather.controller;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
+import com.google.gson.*;
 import com.snake.utils.Constants;
 import com.snake.utils.HttpClientUtils;
 import com.snake.utils.Utils;
@@ -42,7 +41,10 @@ public class WeatherMainController {
 
         String html = sendRequest(Constants.WEATHER_QUERY_URL);
 
-        JsonObject weatherObj = new JsonParser().parse(html).getAsJsonObject();
+        Gson gson = new Gson();
+
+        JsonElement element = gson.fromJson(html, JsonElement.class);
+        JsonObject weatherObj = element.getAsJsonObject();
 
         logger.info("WeatherMainController.weatherCheck() 总用时: " + new Utils().calculatingTimeDiff(System.nanoTime() - startTime));
 
@@ -55,7 +57,10 @@ public class WeatherMainController {
 
         String html = sendRequest(Constants.WEATHER_QUERY_URL);
 
-        JsonObject lifeLevelObj = new JsonParser().parse(html).getAsJsonObject();
+        Gson gson = new Gson();
+
+        JsonElement element = gson.fromJson(html, JsonElement.class);
+        JsonObject lifeLevelObj = element.getAsJsonObject();
 
         logger.info("WeatherMainController.lifeLevelCheck() 总用时: " + new Utils().calculatingTimeDiff(System.nanoTime() - startTime));
 

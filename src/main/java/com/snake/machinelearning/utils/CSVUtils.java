@@ -7,6 +7,7 @@ import com.snake.utils.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -145,6 +146,12 @@ public class CSVUtils {
         CSVWriter csvWriter = null;
 
         try {
+            File file = new File(fileName);
+
+            if (file.exists()) {
+                file.delete();
+            }
+
             fileWriter = new FileWriter(fileName);
             csvWriter = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
 
@@ -152,11 +159,11 @@ public class CSVUtils {
 
             // 写入 header
             String[] header = new String[headerLength];
-            header[0] = Constants.ID.replace("\"", "");
-            header[1] = Constants.Y;
+            header[0] = Constants.FEATURE_ID;
+            header[1] = Constants.FEATURE_Y;
 
             for (int i=2; i<headerLength; i++) {
-                header[i] = Constants.X + (i-2);
+                header[i] = Constants.FEATURE_X + (i-2);
             }
 
             csvWriter.writeNext(header);
@@ -236,22 +243,22 @@ public class CSVUtils {
 
         try {
             // 写入 训练集 - Guest
-            if (!writeDataSetForHostAndGuest(dataFolder + trainingSetFileName, dataFolder + trainingSetFileNameForGuest, Constants.GUEST)) {
+            if (!writeDataSetForHostAndGuest(dataFolder + trainingSetFileName, dataFolder + trainingSetFileNameForGuest, Constants.ROLE_GUEST)) {
                 logger.debug(trainingSetFileNameForGuest + " 写入失败!");
                 return;
             }
             // 写入 训练集 - Host
-            if (!writeDataSetForHostAndGuest(dataFolder + trainingSetFileName, dataFolder + trainingSetFileNameForHost, Constants.HOST)) {
+            if (!writeDataSetForHostAndGuest(dataFolder + trainingSetFileName, dataFolder + trainingSetFileNameForHost, Constants.ROLE_HOST)) {
                 logger.debug(trainingSetFileNameForHost + " 写入失败!");
                 return;
             }
             // 写入 验证集 - Guest
-            if (!writeDataSetForHostAndGuest(dataFolder + validationSetFileName, dataFolder + validationSetFileNameForGuest, Constants.GUEST)) {
+            if (!writeDataSetForHostAndGuest(dataFolder + validationSetFileName, dataFolder + validationSetFileNameForGuest, Constants.ROLE_GUEST)) {
                 logger.debug(validationSetFileNameForGuest + " 写入失败!");
                 return;
             }
             // 写入 验证集 - Host
-            if (!writeDataSetForHostAndGuest(dataFolder + validationSetFileName, dataFolder + validationSetFileNameForHost, Constants.HOST)) {
+            if (!writeDataSetForHostAndGuest(dataFolder + validationSetFileName, dataFolder + validationSetFileNameForHost, Constants.ROLE_HOST)) {
                 logger.debug(validationSetFileNameForHost + " 写入失败!");
             }
         } catch (IOException e) {
@@ -294,6 +301,12 @@ public class CSVUtils {
             fileReader = new FileReader(inputFileName);
             csvReader = new CSVReader(fileReader);
 
+            File file = new File(outputFileName);
+
+            if (file.exists()) {
+                file.delete();
+            }
+
             fileWriter = new FileWriter(outputFileName);
             csvWriter = new CSVWriter(fileWriter, CSVWriter.DEFAULT_SEPARATOR, CSVWriter.NO_QUOTE_CHARACTER, CSVWriter.DEFAULT_ESCAPE_CHARACTER, CSVWriter.RFC4180_LINE_END);
 
@@ -306,7 +319,7 @@ public class CSVUtils {
             int needFeaturesForGuest = new BigDecimal(headerLength).multiply(new BigDecimal(percentageOfFeaturesForGuest)).intValue();
 
             // 根据 角色 来设定需要摘取的 Features 以及 记录数
-            if (role.equals(Constants.GUEST)) {
+            if (role.equals(Constants.ROLE_GUEST)) {
                 splitFeaturesIndex = needFeaturesForGuest > 2 ? needFeaturesForGuest : -1;
 
                 if (isNeedRandomSplit) {
@@ -332,7 +345,7 @@ public class CSVUtils {
             }
 
             // 开始写入
-            if (role.equals(Constants.GUEST)) {
+            if (role.equals(Constants.ROLE_GUEST)) {
                 // 写入 header
                 String[] header = new String[splitFeaturesIndex];
 
