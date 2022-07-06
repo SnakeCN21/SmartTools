@@ -46,7 +46,7 @@ public class CheckJavStatusController {
                     for (String javCode : javCodeList) {
                         String url = Constants.JAVDB_URL.replace(Constants.JAV_CODE, javCode);
 
-                        Map<String, String> htmlMap = new HttpClientUtils().getHTML(url, Constants.JAVDB_HEADERS, new HashMap<>());
+                        Map<String, String> htmlMap = new HttpClientUtils().sendHttpRequest(Constants.REQUEST_TYPE_GET, url, Constants.JAVDB_HEADERS, new HashMap<>());
 
                         String responseCode = htmlMap.get(Constants.RESPONSE_CODE);
 
@@ -69,7 +69,6 @@ public class CheckJavStatusController {
                             }
                         }
 
-                        //Thread.sleep(Constants.HTTP_REQUEST_SLEEP_TIME * 1000);
                         Thread.sleep((new Random().nextInt(Constants.HTTP_REQUEST_RANDOM_SLEEP_TIME) + Constants.HTTP_REQUEST_MIN_SLEEP_TIME) * 1000);
                     }
                 }
@@ -120,10 +119,6 @@ public class CheckJavStatusController {
 
             // 一次读入一行, 直到读入 null, 即文件结束
             while ((lineString = ((BufferedReader) reader).readLine()) != null) {
-//                if (line == 72 || line == 181) {
-//                    System.out.println();
-//                }
-
                 if (!lineString.isEmpty()) {
                     String[] temp = lineString.split(Constants.SPACE_SEPARATOR);
                     String javCode = temp[0];

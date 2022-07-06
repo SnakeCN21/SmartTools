@@ -1,6 +1,7 @@
 package com.snake.utils;
 
-import okhttp3.*;
+import cn.hutool.http.HttpRequest;
+import cn.hutool.http.HttpResponse;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -8,86 +9,55 @@ import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 public class HttpClientUtils {
     private static final Logger logger = LoggerFactory.getLogger(HttpClientUtils.class);
 
-    //采用建造者模式，通过 Builder 可以设置连接超时时间，读写时间. 通过延长时间，可避免java.net.SocketTimeoutException: timeout
-    private OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
-            .connectTimeout(300, TimeUnit.SECONDS)
-            .readTimeout(300, TimeUnit.SECONDS)
-            .writeTimeout(300, TimeUnit.SECONDS)
-            .build();
-    private String resourceStatus;
-
     /**
      * 请求 Http Request
      *
-     * @param url     - 需要搜索的网址
-     * @param headers - request headers
+     * @param requestType - Http 请求类型: get or post
+     * @param url         - 需要搜索的网址
+     * @param headers     - request headers
+     * @param formBody    - request formBody
      *
-     * @return Map<String, String> - key: responseCode - HTTP状态码; key: html - Http 返回的 html 页面
+     * @return 请求相应的内容
      */
-    public Map<String, String> getHTML(String url, Map<String, String> headers, Map<String, String> formBody) {
+    public Map<String, String> sendHttpRequest(String requestType, String url, Map<String, String> headers, Map<String, Object> formBody) {
         Map<String, String> map = new HashMap<String, String>();
 
         String responseCode = Constants.HTTP_RESPONSE_CODE_200;
         String html = "";
 
-        RequestBody requestBody = null;
-        Request request = null;
+        HttpRequest request = null;
 
-        Response response = null;
-
-        try {
-            FormBody.Builder requestBodyBuilder = new FormBody.Builder();
-            if (!formBody.isEmpty()) {
-                for (Map.Entry<String, String> entry : formBody.entrySet()) {
-                    //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-
-                    requestBodyBuilder.add(entry.getKey(), entry.getValue());
-                }
-
-                requestBody = requestBodyBuilder.build();
-            }
-
-            Request.Builder requestBuilder = new Request.Builder().url(url);
-            if (!headers.isEmpty()) {
-                for (Map.Entry<String, String> entry : headers.entrySet()) {
-                    //System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue());
-
-                    requestBuilder.addHeader(entry.getKey(), entry.getValue());
-                }
-            }
-
-            if (requestBody == null) {
-                request = requestBuilder.build();
-            } else {
-                request = requestBuilder.post(requestBody).build();
-            }
-
-            Call call = okHttpClient.newCall(request);
-
-            response = call.execute();
-
-            if (!response.isSuccessful()) {
-                logger.info("HTTP 请求失败. URL = " + url);
-
-                responseCode = Integer.toString(response.code());
-            } else {
-                html = response.body().string();
-            }
-        } catch (IOException e) {
-            logger.debug("HTTP 请求失败. URL = " + url, e);
-        } finally {
-            if (response != null) {
-                response.close();
-            }
+        if (Constants.REQUEST_TYPE_GET.equalsIgnoreCase(requestType)) {
+            request = HttpRequest.get(url);
+        } else {
+            request = HttpRequest.post(url);
         }
+        request.timeout(300 * 1000);
+
+        if (headers != null && !headers.isEmpty()) {
+            request.addHeaders(headers);
+        }
+        if (formBody != null && !formBody.isEmpty()) {
+            request.form(formBody);
+        }
+
+        HttpResponse response = request.execute();
+
+        if (!response.isOk()) {
+            logger.info("HTTP 请求失败. URL = " + url);
+
+            responseCode = Integer.toString(response.getStatus());
+        } else {
+            html = response.body();
+        }
+
+        response.close();
 
         map.put(Constants.RESPONSE_CODE, responseCode);
         map.put(Constants.HTML, html);

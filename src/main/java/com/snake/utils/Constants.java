@@ -27,6 +27,9 @@ public class Constants {
     public static final String ROLE_GUEST = "Guest";
     public static final String ROLE_HOST = "Host";
 
+    public static final String REQUEST_TYPE_GET = "get";
+    public static final String REQUEST_TYPE_POST = "post";
+
     public static final String MESSAGE = "message";
     public static final String RESPONSE_CODE = "responseCode";
     public static final String HTML = "html";

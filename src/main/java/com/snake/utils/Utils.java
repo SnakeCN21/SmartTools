@@ -73,7 +73,8 @@ public class Utils {
      * 在文件名最后添加一个后缀
      *
      * @param fullName - 完整的文件名(不包含文件路径, 但可能包含文件扩展名)
-     * @param suffix - 需要添加的后缀
+     * @param suffix   - 需要添加的后缀
+     *
      * @return
      */
     public String appendNameSuffix(String fullName, String suffix) {

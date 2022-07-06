@@ -73,7 +73,7 @@ public class CSVUtils {
             int indexOfFeatureY = -1;
 
             // 找出 特征 id 和 y 在 record 数组中的 index
-            for (int col=0; col<headers.length; col++) {
+            for (int col = 0; col < headers.length; col++) {
                 if (featureIDName.equals(headers[col].trim())) {
                     indexOfFeatureID = col;
                 } else if (featureYName.equals(headers[col].trim())) {
@@ -95,7 +95,7 @@ public class CSVUtils {
             String suffixOfTrainingSet = new Utils().getPropValue("suffix_of_training_set");
             String suffixOfValidationSet = new Utils().getPropValue("suffix_of_validation_set");
 
-            String trainingSetFileName =new Utils().appendNameSuffix(dataFileName, suffixOfTrainingSet);
+            String trainingSetFileName = new Utils().appendNameSuffix(dataFileName, suffixOfTrainingSet);
             String validationSetFileName = new Utils().appendNameSuffix(dataFileName, suffixOfValidationSet);
 
             String percentageOfValidationSetOfTotalSet = new Utils().getPropValue("percentage_of_validation_set_of_total_set");
@@ -129,14 +129,15 @@ public class CSVUtils {
     /**
      * 切分 总的 训练集 和 验证集
      *
-     * @param fileName - 文件名
-     * @param records - 数据集
-     * @param startFromRows - 从数据集的第 n 行开始写入
-     * @param endToRows - 从数据集的第 n 行终止写入
+     * @param fileName         - 文件名
+     * @param records          - 数据集
+     * @param startFromRows    - 从数据集的第 n 行开始写入
+     * @param endToRows        - 从数据集的第 n 行终止写入
      * @param indexOfFeatureID - 特征 id 在 record 数组中的 index
-     * @param indexOfFeatureY - 特征 y 在 record 数组中的 index
+     * @param indexOfFeatureY  - 特征 y 在 record 数组中的 index
      *
      * @return 是否成功写入对应的数据集
+     *
      * @throws IOException
      */
     private boolean writeTrainingAndValidationSet(String fileName, List<String[]> records, int startFromRows, int endToRows, int indexOfFeatureID, int indexOfFeatureY) throws IOException {
@@ -162,14 +163,14 @@ public class CSVUtils {
             header[0] = Constants.FEATURE_ID;
             header[1] = Constants.FEATURE_Y;
 
-            for (int i=2; i<headerLength; i++) {
-                header[i] = Constants.FEATURE_X + (i-2);
+            for (int i = 2; i < headerLength; i++) {
+                header[i] = Constants.FEATURE_X + (i - 2);
             }
 
             csvWriter.writeNext(header);
 
             // 写入记录
-            for (int row=startFromRows; row<endToRows; row++) {
+            for (int row = startFromRows; row < endToRows; row++) {
                 String[] record = records.get(row);
 
                 String[] temp = new String[headerLength];
@@ -177,7 +178,7 @@ public class CSVUtils {
                 temp[0] = record[indexOfFeatureID];
                 temp[1] = record[indexOfFeatureY];
 
-                for (int col=0; col<headerLength; col++) {
+                for (int col = 0; col < headerLength; col++) {
                     int index = col + 2;
 
                     if (col == indexOfFeatureID || col == indexOfFeatureY) {
@@ -185,10 +186,10 @@ public class CSVUtils {
                     }
 
                     if (col > indexOfFeatureID) {
-                        index --;
+                        index--;
                     }
                     if (col > indexOfFeatureY) {
-                        index --;
+                        index--;
                     }
 
                     temp[index] = record[col];
@@ -228,7 +229,7 @@ public class CSVUtils {
         String suffixOfTrainingSet = new Utils().getPropValue("suffix_of_training_set");
         String suffixOfValidationSet = new Utils().getPropValue("suffix_of_validation_set");
 
-        String trainingSetFileName =new Utils().appendNameSuffix(dataFileName, suffixOfTrainingSet);
+        String trainingSetFileName = new Utils().appendNameSuffix(dataFileName, suffixOfTrainingSet);
         String validationSetFileName = new Utils().appendNameSuffix(dataFileName, suffixOfValidationSet);
 
         String suffixOfTrainingSetForGuest = new Utils().getPropValue("suffix_of_training_set_for_guest");
@@ -236,9 +237,9 @@ public class CSVUtils {
         String suffixOfValidationSetForGuest = new Utils().getPropValue("suffix_of_validation_set_for_guest");
         String suffixOfValidationSetForHost = new Utils().getPropValue("suffix_of_validation_set_for_host");
 
-        String trainingSetFileNameForGuest =new Utils().appendNameSuffix(dataFileName, suffixOfTrainingSetForGuest);
+        String trainingSetFileNameForGuest = new Utils().appendNameSuffix(dataFileName, suffixOfTrainingSetForGuest);
         String trainingSetFileNameForHost = new Utils().appendNameSuffix(dataFileName, suffixOfTrainingSetForHost);
-        String validationSetFileNameForGuest =new Utils().appendNameSuffix(dataFileName, suffixOfValidationSetForGuest);
+        String validationSetFileNameForGuest = new Utils().appendNameSuffix(dataFileName, suffixOfValidationSetForGuest);
         String validationSetFileNameForHost = new Utils().appendNameSuffix(dataFileName, suffixOfValidationSetForHost);
 
         try {
@@ -272,10 +273,12 @@ public class CSVUtils {
     /**
      * 从 inputFile 里面读取数据集, 然后按照 role 对应的规则, 写入到 outputFile 中
      *
-     * @param inputFileName - 输入的数据集文件
+     * @param inputFileName  - 输入的数据集文件
      * @param outputFileName - 输出的数据集文件
-     * @param role - 角色, Guest or Host
+     * @param role           - 角色, Guest or Host
+     *
      * @return 是否成功写入对应的数据集
+     *
      * @throws IOException
      */
     private boolean writeDataSetForHostAndGuest(String inputFileName, String outputFileName, String role) throws IOException {
@@ -328,7 +331,7 @@ public class CSVUtils {
                     numberOfRecordsRequired = recordSize;
                 }
             } else {
-                splitFeaturesIndex = needFeaturesForGuest > 2 && (headerLength-needFeaturesForGuest) <= (headerLength-3) ? needFeaturesForGuest : -1;
+                splitFeaturesIndex = needFeaturesForGuest > 2 && (headerLength - needFeaturesForGuest) <= (headerLength - 3) ? needFeaturesForGuest : -1;
 
                 if (isNeedRandomSplit) {
                     numberOfRecordsRequired = new BigDecimal(recordSize).multiply(new BigDecimal(percentageOfDataSetForHost)).intValue();
@@ -349,7 +352,7 @@ public class CSVUtils {
                 // 写入 header
                 String[] header = new String[splitFeaturesIndex];
 
-                for (int col=0; col<splitFeaturesIndex; col++) {
+                for (int col = 0; col < splitFeaturesIndex; col++) {
                     header[col] = headers[col];
                 }
 
@@ -357,10 +360,10 @@ public class CSVUtils {
 
                 // 写入 record
                 if (numberOfRecordsRequired == recordSize) {
-                    for (int row=1; row<recordSize; row++) {
+                    for (int row = 1; row < recordSize; row++) {
                         String[] temp = new String[splitFeaturesIndex];
 
-                        for (int col=0; col<splitFeaturesIndex; col++) {
+                        for (int col = 0; col < splitFeaturesIndex; col++) {
                             temp[col] = records.get(row)[col];
                         }
 
@@ -375,7 +378,7 @@ public class CSVUtils {
                         if (!savedRows.contains(rowIndex)) {
                             String[] temp = new String[splitFeaturesIndex];
 
-                            for (int col=0; col<splitFeaturesIndex; col++) {
+                            for (int col = 0; col < splitFeaturesIndex; col++) {
                                 temp[col] = records.get(rowIndex)[col];
                             }
 
@@ -387,27 +390,27 @@ public class CSVUtils {
                 }
             } else {
                 // 写入 header
-                String[] header = new String[headerLength-needFeaturesForGuest+1];
+                String[] header = new String[headerLength - needFeaturesForGuest + 1];
 
                 header[0] = records.get(0)[0];
                 int i = 1;
-                for (int col=splitFeaturesIndex; col<headerLength; col++) {
+                for (int col = splitFeaturesIndex; col < headerLength; col++) {
                     header[i] = headers[col];
-                    i ++;
+                    i++;
                 }
 
                 csvWriter.writeNext(header);
 
                 // 写入 record
                 if (numberOfRecordsRequired == recordSize) {
-                    for (int row=1; row<recordSize; row++) {
-                        String[] temp = new String[headerLength-needFeaturesForGuest+1];
+                    for (int row = 1; row < recordSize; row++) {
+                        String[] temp = new String[headerLength - needFeaturesForGuest + 1];
 
                         temp[0] = records.get(row)[0];
                         i = 1;
-                        for (int col=splitFeaturesIndex; col<headerLength; col++) {
+                        for (int col = splitFeaturesIndex; col < headerLength; col++) {
                             temp[i] = records.get(row)[col];
-                            i ++;
+                            i++;
                         }
 
                         csvWriter.writeNext(temp);
@@ -419,13 +422,13 @@ public class CSVUtils {
                         int rowIndex = new Random().nextInt(numberOfRecordsRequired) + 1;
 
                         if (!savedRows.contains(rowIndex)) {
-                            String[] temp = new String[headerLength-needFeaturesForGuest+1];
+                            String[] temp = new String[headerLength - needFeaturesForGuest + 1];
 
                             temp[0] = records.get(rowIndex)[0];
                             i = 1;
-                            for (int col=splitFeaturesIndex; col<headerLength; col++) {
+                            for (int col = splitFeaturesIndex; col < headerLength; col++) {
                                 temp[i] = records.get(rowIndex)[col];
-                                i ++;
+                                i++;
                             }
 
                             csvWriter.writeNext(temp);

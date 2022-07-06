@@ -13,7 +13,7 @@ import java.util.Map;
 public class WeatherMainController {
     private static final Logger logger = LoggerFactory.getLogger(WeatherMainController.class);
 
-    private String sendRequest(String url) {
+    private String sendHttpRequest(String url) {
         String html = "";
 
         String cityName = new Utils().getPropValue("city_name");
@@ -22,7 +22,7 @@ public class WeatherMainController {
         url = url.replace(Constants.CITY_NAME, cityName);
         url = url.replace(Constants.WEATHER_KEY, weatherKey);
 
-        Map<String, String> htmlMap = new HttpClientUtils().getHTML(url, new HashMap<>(), new HashMap<>());
+        Map<String, String> htmlMap = new HttpClientUtils().sendHttpRequest(Constants.REQUEST_TYPE_GET, url, new HashMap<>(), new HashMap<>());
 
         String responseCode = htmlMap.get(Constants.RESPONSE_CODE);
 
@@ -39,7 +39,7 @@ public class WeatherMainController {
         logger.info("开始执行 WeatherMainController.weatherCheck()...");
         long startTime = System.nanoTime();
 
-        String html = sendRequest(Constants.WEATHER_QUERY_URL);
+        String html = sendHttpRequest(Constants.WEATHER_QUERY_URL);
 
         Gson gson = new Gson();
 
@@ -55,7 +55,7 @@ public class WeatherMainController {
         logger.info("开始执行 WeatherMainController.lifeLevelCheck()...");
         long startTime = System.nanoTime();
 
-        String html = sendRequest(Constants.WEATHER_QUERY_URL);
+        String html = sendHttpRequest(Constants.WEATHER_QUERY_URL);
 
         Gson gson = new Gson();
 
@@ -74,4 +74,5 @@ public class WeatherMainController {
 
         weatherMainController.weatherCheck();
     }
+
 }
