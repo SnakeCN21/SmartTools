@@ -70,6 +70,61 @@ public class Utils {
     }
 
     /**
+     * 解析 Constants.PROP_FILE_NAME 文件
+     *
+     * @param propertiesPath - 指定一个特定的 properties 文件位置
+     * @param key            - properties 文件中的 key
+     *
+     * @return
+     */
+    public String getPropValue(String propertiesPath, String key) {
+        String value = "";
+        Properties props = new Properties();
+
+        try {
+            FileInputStream input = new FileInputStream(new File(propertiesPath));
+            props.load(new InputStreamReader(input, Charset.forName("UTF-8")));
+
+            value = props.getProperty(key);
+        } catch (IOException e) {
+            logger.debug("解析 " + propertiesPath + " 文件错误: " + e.getMessage());
+        }
+
+        return value;
+    }
+
+    /**
+     * 解析 propertiesFilePath 文件, 将多个 value 转换成一个 list 返回
+     *
+     * @param propertiesPath - 指定一个特定的 properties 文件位置
+     * @param key            - properties 文件中的 key
+     *
+     * @return
+     */
+    public List<String> getPropLists(String propertiesPath, String key) {
+        List<String> list = new ArrayList<String>();
+
+        String value = "";
+        Properties props = new Properties();
+
+        try {
+            FileInputStream input = new FileInputStream(new File(propertiesPath));
+            props.load(new InputStreamReader(input, Charset.forName("UTF-8")));
+
+            value = props.getProperty(key);
+            String[] valueLists = value.split(";");
+
+            for (String str : valueLists) {
+                list.add(str.trim());
+            }
+        } catch (IOException e) {
+            logger.debug("解析 " + propertiesPath + " 文件错误: " + e.getMessage());
+        }
+
+        return list;
+    }
+
+    /**
      * 在文件名最后添加一个后缀
      *
      * @param fullName - 完整的文件名(不包含文件路径, 但可能包含文件扩展名)

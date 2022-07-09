@@ -4,6 +4,10 @@ import com.snake.utils.Constants;
 import com.snake.utils.HttpClientUtils;
 import com.snake.utils.TxtWriterUtils;
 import com.snake.utils.Utils;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,7 +58,7 @@ public class CheckJavStatusController {
                             String html = htmlMap.get(Constants.HTML);
 
                             // 0: 没有磁链; 1: 有磁链; 2: 有中文磁链
-                            Map<String, String> javCodeMap = new HttpClientUtils().parseJavDBHTML(javCode, html);
+                            Map<String, String> javCodeMap = parseJavDBHTML(javCode, html);
 
                             int resourceStatus = Integer.parseInt(javCodeMap.get(Constants.RESOURCE_STATUS));
                             String releaseDate = javCodeMap.get(Constants.RELEASE_DATE);
@@ -153,6 +157,74 @@ public class CheckJavStatusController {
         }
 
         return javCodeList;
+    }
+
+    /**
+     * 解析 Http 返回的 html 页面, 判断当前 JavCode 的状态
+     *
+     * @param javCode - 需要检测的 JavCode
+     * @param html    - Http 返回的 html 页面
+     *
+     * @return Map    - key: resourceStatus - 影片的 <资源状态>; key: releaseDate - 影片的 <发布日期>
+     */
+    private Map<String, String> parseJavDBHTML(String javCode, String html) {
+        Map<String, String> javCodeMap = new HashMap<String, String>();
+
+        String resourceStatus = Constants.NO_RESOURCES;
+        String releaseDate = "";
+
+        if (!html.isEmpty()) {
+            //1.使用 parse() 将 html 解析为 document 对象
+            Document document = Jsoup.parse(html);
+
+            Elements body = document.getElementsByTag("body");
+            Elements section = body.first().getElementsByClass("section");
+            Elements container = section.first().getElementsByClass("container");
+            Elements movieList = container.first().getElementsByClass("movie-list");
+
+            if (!movieList.isEmpty()) {
+                Elements movieListChildren = movieList.first().children();
+
+                for (Element item : movieListChildren) {
+                    Elements videoTitle = item.getElementsByClass("video-title");
+                    Elements uidCode = videoTitle.first().getElementsByTag("strong");
+
+                    // 获取影片的 uid
+                    String uid = uidCode.first().text();
+                    // 获取影片的 发布日期
+                    Elements meta = item.getElementsByClass("meta");
+
+                    if (!uid.isEmpty()) {
+                        // 判断当前选中的 Element 的 uid 是不是正是我们要找的
+                        if (javCode.equalsIgnoreCase(uid)) {
+                            releaseDate = meta.text().trim();
+
+                            // 获取影片的附加信息
+                            Elements addons = item.getElementsByClass("has-addons");
+
+                            if (!addons.isEmpty()) {
+                                Elements isDownloadableSpan = addons.first().getElementsByClass(Constants.DOWNLOADABLE_SPAN_TAG);
+                                if (!isDownloadableSpan.isEmpty()) {
+                                    resourceStatus = Constants.HAS_DOWNLOAD_RESOURCES;
+                                    break;
+                                }
+
+                                Elements isChineseSubtitlesSpan = addons.first().getElementsByClass(Constants.CHINESE_SUBTITLES_SPAN_TAG);
+                                if (!isChineseSubtitlesSpan.isEmpty()) {
+                                    resourceStatus = Constants.HAS_CHINESE_SUBTITLES_RESOURCES;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        javCodeMap.put(Constants.RESOURCE_STATUS, resourceStatus);
+        javCodeMap.put(Constants.RELEASE_DATE, releaseDate);
+
+        return javCodeMap;
     }
 
     public static void main(String[] args) {

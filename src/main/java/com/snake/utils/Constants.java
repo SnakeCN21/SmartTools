@@ -30,6 +30,8 @@ public class Constants {
     public static final String REQUEST_TYPE_GET = "get";
     public static final String REQUEST_TYPE_POST = "post";
 
+    public static final String HTTP_HEADER_USER_AGENT = "User-Agent";
+
     public static final String MESSAGE = "message";
     public static final String RESPONSE_CODE = "responseCode";
     public static final String HTML = "html";
