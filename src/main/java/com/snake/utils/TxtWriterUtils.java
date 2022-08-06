@@ -90,7 +90,7 @@ public class TxtWriterUtils {
                 out.close();
             }
 
-            logger.info("********************************************************************\n"
+            logger.info("\n********************************************************************\n"
                     + "文件 " + file.getAbsolutePath() + " 写入完毕.\n"
                     + "共整理了 " + chineseSubtitlesJavCodeList.size() + " 个拥有中文磁链的 JavCode, 以及 " + downloadableJavCodeList.size() + " 个拥有磁链的 JavCode.\n"
                     + "TxtWriterUtils.txtWriter() 总用时: " + new Utils().calculatingTimeDiff(System.nanoTime() - startTime) + "\n"
