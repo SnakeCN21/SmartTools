@@ -38,6 +38,7 @@ FC2-999863          中文字幕
 FC2-1040071         中文字幕
 FSDSS-374           中文字幕
 HEYZO-0505          中文字幕
+HMPD-10042          中文字幕
 IPX-686             中文字幕
 IPX-823             中文字幕
 IPZ-207             中文字幕
@@ -107,9 +108,12 @@ STARS-072           中文字幕
 STARS-105           中文字幕
 STARS-316           中文字幕
 STARS-448           中文字幕, 去水印
+STARS-555           中文字幕
 TIKB-116            中文字幕
+TKOL-002            中文字幕
 TOTTE-045           中文字幕
 URE-078             中文字幕
+URKK-009            中文字幕
 URPW-011            720 * 406, 中文字幕
 URPW-042            中文字幕
 VENU-929            去水印
@@ -228,8 +232,6 @@ MOGI-044
 MOGI-047
 MOPP-055
 MUKC-023
-MVSD-516
-NIMA-011
 NOSKN-006
 NYH-151
 ORE-831
@@ -245,7 +247,9 @@ REAL-799
 ROYD-094
 SAME-013
 SAME-014
+SAN-066
 SDDE-676
+SDDE-682
 SDNM-349
 SDNM-351
 SDTH-020
@@ -265,10 +269,10 @@ STARS-602
 STARS-616
 STARS-629
 STARS-634
+STARS-657
 STARS-658
 STARS-654
 STARS-656
-STARS-667
 STARS-678
 STCV-130
 STCV-141
@@ -282,4 +286,3 @@ XVSR-665
 ZOCM-039
 
 miss lexa
-stars-555   中文

@@ -8,6 +8,10 @@ public class Constants {
 
     public static final String FILE_SEPARATOR = "/";
     public static final String DOT = ".";
+    public static final String COMMA = ",";
+    public static final String SEMICOLON = ";";
+
+    public static final String CHARSET_GBK = "GBK";
 
     public static final String SPACE_SEPARATOR = " ";
 

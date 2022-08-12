@@ -1,13 +1,15 @@
 package com.snake.utils;
 
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.util.*;
@@ -286,6 +288,187 @@ public class Utils {
         }
 
         return releaseDate.compareTo(LocalDate.now());
+    }
+
+    /**
+     * 根据文件路径读取 CSV 文件的内容
+     *
+     * @param filePath - CSV 文件的绝对地址
+     *
+     * @return
+     */
+    public List<String> readFromCSV(String filePath) {
+        ArrayList<String> dataList = new ArrayList<>();
+        BufferedReader buffReader = null;
+        try {
+            //构建文件对象
+            File csvFile = new File(filePath);
+            //判断文件是否存在
+            if (!csvFile.exists()) {
+                logger.error("文件 " + filePath + " 不存在.");
+                return dataList;
+            }
+            //构建字符输入流
+            FileReader fileReader = new FileReader(csvFile);
+            //构建缓存字符输入流
+            buffReader = new BufferedReader(fileReader);
+            String line = "";
+            //根据合适的换行符来读取一行数据,赋值给line
+            while ((line = buffReader.readLine()) != null) {
+                if (StringUtils.isNotBlank(line)) {
+                    //数据不为空则加入列表
+                    dataList.add(line);
+                }
+            }
+        } catch (Exception e) {
+            logger.error("读取 CSV 文件发生异常: " + filePath);
+            logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                //关闭流
+                if (buffReader != null) {
+                    buffReader.close();
+                }
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+
+        return dataList;
+    }
+
+    /**
+     * 将 String headLabel 和 String data 写入到 String filePath
+     *
+     * @param headLabel - 头部标签
+     * @param data      - 待写入数据
+     * @param filePath  - 文件路径
+     * @param addFlag   - 是否追加
+     */
+    public void writeToCSVFromSingleLine(String filePath, String headLabel, String data, String charsetName, boolean addFlag) {
+        BufferedWriter buffWriter = null;
+        try {
+            //根据指定路径构建文件对象
+            File csvFile = new File(filePath);
+
+            //构建缓存字符输出流 (不推荐使用 OutputStreamWriter)
+            //buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath)), StandardCharsets.UTF_8), 1024);
+            buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath), addFlag), charsetName), 1024);
+
+            //头部不为空则写入头部, 并且换行
+            if (StringUtils.isNotBlank(headLabel)) {
+                buffWriter.write(headLabel);
+                buffWriter.newLine();
+            }
+
+            if (StringUtils.isNotBlank(data)) {
+                buffWriter.write(data);
+                buffWriter.newLine(); //文件写完最后一个换行不用处理
+            }
+
+            //刷新流, 也就是把缓存中剩余的内容输出到文件
+            buffWriter.flush();
+        } catch (Exception e) {
+            logger.error("CSV 写入出现异常: " + filePath);
+            logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                //关闭流
+                if (buffWriter != null) {
+                    buffWriter.close();
+                }
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * 将 String headLabel 和 List<String> dataList 写入到 String filePath
+     *
+     * @param headLabel - 头部标签
+     * @param dataList  - 待写入数据列表
+     * @param filePath  - 文件路径
+     * @param addFlag   - 是否追加
+     */
+    public void writeToCSVFromList(String filePath, String headLabel, List<String> dataList, String charsetName, boolean addFlag) {
+        BufferedWriter buffWriter = null;
+        try {
+            //根据指定路径构建文件对象
+            File csvFile = new File(filePath);
+
+            //构建缓存字符输出流 (不推荐使用 OutputStreamWriter)
+            //buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath)), StandardCharsets.UTF_8), 1024);
+            buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath), addFlag), charsetName), 1024);
+
+            //头部不为空则写入头部, 并且换行
+            if (StringUtils.isNotBlank(headLabel)) {
+                buffWriter.write(headLabel);
+                buffWriter.newLine();
+            }
+            //遍历list
+            for (String rowStr : dataList) {
+                //如果数据不为空, 则写入文件内容, 并且换行
+                if (StringUtils.isNotBlank(rowStr)) {
+                    buffWriter.write(rowStr);
+                    buffWriter.newLine(); //文件写完最后一个换行不用处理
+                }
+            }
+            //刷新流, 也就是把缓存中剩余的内容输出到文件
+            buffWriter.flush();
+        } catch (Exception e) {
+            logger.error("CSV 写入出现异常: " + filePath);
+            logger.error(e.getMessage(), e);
+        } finally {
+            try {
+                //关闭流
+                if (buffWriter != null) {
+                    buffWriter.close();
+                }
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+    }
+
+    /**
+     * Excel, CSV 列号转换成数字, 方便 poi 后续操作
+     *
+     * @param excelNum - excel, csv 文件中对应的列号
+     *
+     * @return
+     */
+    public int excelNum2Digit(String excelNum) {
+        char[] chs = excelNum.toCharArray();
+        int digit = 0;
+
+        /**
+         * B*26^2 + C*26^1 + F*26^0 = ((0*26 + B)*26 + C)*26 + F
+         */
+        for (char ch : chs) {
+            digit = digit * 26 + (ch - 'A');
+        }
+
+        return digit;
+    }
+
+    /**
+     * 在准备 Excel, CSV 数据的时候, 提前对 逗号, 引号 和 换行符 进行数据清理
+     * 避免写入之后的数据格式不正确
+     *
+     * @param data - 需要进行数据清理的内容
+     *
+     * @return
+     */
+    public String escapeSpecialCharacters(String data) {
+        String escapedData = data.replaceAll("\\R", " ");
+
+        if (data.contains(",") || data.contains("\"") || data.contains("'")) {
+            data = data.replace("\"", "\"\"");
+            escapedData = "\"" + data + "\"";
+        }
+
+        return escapedData;
     }
 
     public static void main(String[] args) {
