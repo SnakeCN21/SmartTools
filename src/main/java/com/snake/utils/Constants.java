@@ -34,6 +34,8 @@ public class Constants {
     public static final String REQUEST_TYPE_GET = "get";
     public static final String REQUEST_TYPE_POST = "post";
 
+    public static final int HTTP_TIMEOUT = 60 * 1000;
+
     public static final String HTTP_HEADER_USER_AGENT = "User-Agent";
 
     public static final String MESSAGE = "message";
@@ -62,7 +64,7 @@ public class Constants {
     // 每轮 Http 请求间隔最短休息的时间, 单位: s
     public static final int HTTP_REQUEST_MIN_SLEEP_TIME = 2;
     // 每轮 Http 请求间隔随机休息的时间, 单位: s
-    public static final int HTTP_REQUEST_RANDOM_SLEEP_TIME = 5;
+    public static final int HTTP_REQUEST_RANDOM_SLEEP_TIME = 4;
 
     public static final String DUPLICATE_JAV_CODE_LIST = "duplicateJavCodeList";
     public static final String DOWNLOADABLE_JAV_CODE_LIST = "downloadableJavCodeList";

@@ -1,7 +1,22 @@
-*.log
-*.class
+# IntelliJ project files
+.DS_Store
+.springBeans
+.gitignore
+.classpath
+.factorypath
+.project
+user-profile-analysis.iml
+README.md
+
+.apt_generated/*
+.settings/*
 .idea/*
 target/*
 log/*
 out/*
+
+*.iml
+*.log
+*.class
+
 

@@ -42,42 +42,46 @@ public class CheckJavStatusController {
         if (!file.exists()) {
             logger.info(file.getAbsolutePath() + " 文件不存在.");
         } else {
-            try {
-                javCodeList = parseJavCode(file);
-                duplicateJavCodeList = new Utils().findCollectionDuplicateElements(javCodeList);
+            javCodeList = parseJavCode(file);
+            duplicateJavCodeList = new Utils().findCollectionDuplicateElements(javCodeList);
 
-                if (!javCodeList.isEmpty()) {
-                    for (String javCode : javCodeList) {
-                        String url = Constants.JAVDB_URL.replace(Constants.JAV_CODE, javCode);
+            if (!javCodeList.isEmpty()) {
+                List<String> urlList = new ArrayList<String>();
+                String url = "";
+                for (String javCode : javCodeList) {
+                    url = Constants.JAVDB_URL.replace(Constants.JAV_CODE, javCode);
 
-                        Map<String, String> htmlMap = new HttpClientUtils().sendHttpRequest(Constants.REQUEST_TYPE_GET, url, Constants.JAVDB_HEADERS, new HashMap<>());
+                    urlList.add(url);
+                }
 
-                        String responseCode = htmlMap.get(Constants.RESPONSE_CODE);
+                List<Map<String, String>> htmlList = new HttpClientUtils().sendHttpRequestList(Constants.REQUEST_TYPE_GET, urlList, Constants.JAVDB_HEADERS, new HashMap<>());
+                String responseCode = "";
+                String html = "";
+                String javCode = "";
+                for (int i = 0; i < htmlList.size(); i++) {
+                    Map<String, String> htmlMap = htmlList.get(i);
+                    responseCode = htmlMap.get(Constants.RESPONSE_CODE);
 
-                        if (responseCode.equalsIgnoreCase(Constants.HTTP_RESPONSE_CODE_200)) {
-                            String html = htmlMap.get(Constants.HTML);
+                    if (responseCode.equalsIgnoreCase(Constants.HTTP_RESPONSE_CODE_200)) {
+                        html = htmlMap.get(Constants.HTML);
+                        javCode = javCodeList.get(i);
 
-                            // 0: 没有磁链; 1: 有磁链; 2: 有中文磁链
-                            Map<String, String> javCodeMap = parseJavDBHTML(javCode, html);
+                        // 0: 没有磁链; 1: 有磁链; 2: 有中文磁链
+                        Map<String, String> javCodeMap = parseJavDBHTML(javCode, html);
 
-                            int resourceStatus = Integer.parseInt(javCodeMap.get(Constants.RESOURCE_STATUS));
-                            String releaseDate = javCodeMap.get(Constants.RELEASE_DATE);
+                        int resourceStatus = Integer.parseInt(javCodeMap.get(Constants.RESOURCE_STATUS));
+                        String releaseDate = javCodeMap.get(Constants.RELEASE_DATE);
 
-                            switch (resourceStatus) {
-                                case 1:
-                                    downloadableJavCodeList.add(javCode + Constants.SPACE_AND_HYPHEN + releaseDate);
-                                    break;
-                                case 2:
-                                    chineseSubtitlesJavCodeList.add(javCode + Constants.SPACE_AND_HYPHEN + releaseDate);
-                                    break;
-                            }
+                        switch (resourceStatus) {
+                            case 1:
+                                downloadableJavCodeList.add(javCode + Constants.SPACE_AND_HYPHEN + releaseDate);
+                                break;
+                            case 2:
+                                chineseSubtitlesJavCodeList.add(javCode + Constants.SPACE_AND_HYPHEN + releaseDate);
+                                break;
                         }
-
-                        Thread.sleep((new Random().nextInt(Constants.HTTP_REQUEST_RANDOM_SLEEP_TIME) + Constants.HTTP_REQUEST_MIN_SLEEP_TIME) * 1000);
                     }
                 }
-            } catch (Exception e) {
-                logger.debug(e.getMessage(), e);
             }
         }
 
@@ -103,9 +107,7 @@ public class CheckJavStatusController {
      * 经过一些数据清理之后, 将真正的 JavCode 放入到一个 List<String> 返回
      *
      * @param file - 待检测的 JavCode.txt
-     *
      * @return List<String> - 清理完毕的 JavCode
-     *
      * @throws IOException
      */
     private List<String> parseJavCode(File file) throws IOException {
@@ -164,7 +166,6 @@ public class CheckJavStatusController {
      *
      * @param javCode - 需要检测的 JavCode
      * @param html    - Http 返回的 html 页面
-     *
      * @return Map    - key: resourceStatus - 影片的 <资源状态>; key: releaseDate - 影片的 <发布日期>
      */
     private Map<String, String> parseJavDBHTML(String javCode, String html) {
