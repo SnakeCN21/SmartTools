@@ -1,15 +1,12 @@
 package com.snake.utils;
 
-import org.apache.commons.codec.digest.DigestUtils;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.math.BigInteger;
 import java.nio.charset.Charset;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.util.*;
@@ -22,7 +19,6 @@ public class Utils {
      * 解析 Constants.PROP_FILE_NAME 文件
      *
      * @param key - Constants.PROP_FILE_NAME 文件中的 key
-     *
      * @return value
      */
     public String getPropValue(String key) {
@@ -45,7 +41,6 @@ public class Utils {
      * 解析 Constants.PROP_FILE_NAME 文件, 将多个 value 转换成一个 list 返回
      *
      * @param key - Constants.PROP_FILE_NAME 文件中的 key
-     *
      * @return List
      */
     public List<String> getPropLists(String key) {
@@ -76,7 +71,6 @@ public class Utils {
      *
      * @param propertiesPath - 指定一个特定的 properties 文件位置
      * @param key            - properties 文件中的 key
-     *
      * @return
      */
     public String getPropValue(String propertiesPath, String key) {
@@ -100,7 +94,6 @@ public class Utils {
      *
      * @param propertiesPath - 指定一个特定的 properties 文件位置
      * @param key            - properties 文件中的 key
-     *
      * @return
      */
     public List<String> getPropLists(String propertiesPath, String key) {
@@ -131,7 +124,6 @@ public class Utils {
      *
      * @param fullName - 完整的文件名(不包含文件路径, 但可能包含文件扩展名)
      * @param suffix   - 需要添加的后缀
-     *
      * @return
      */
     public String appendNameSuffix(String fullName, String suffix) {
@@ -154,7 +146,6 @@ public class Utils {
      * timeDiff 是基于 System.nanoTime() 计算出来的
      *
      * @param timeDiff - 需要转换的long类型时间
-     *
      * @return
      */
     public String calculatingTimeDiff(long timeDiff) {
@@ -197,7 +188,6 @@ public class Utils {
      * 找出 list 中重复的数据, 并将之放入到一个新的 List 中返回
      *
      * @param list - 需要进行查重的 List
-     *
      * @return <T> List - List 中重复的元素
      */
     public <T> List<T> findCollectionDuplicateElements(Collection<T> list) {
@@ -223,7 +213,6 @@ public class Utils {
      * 将传入的 list 去重并排序
      *
      * @param list - 需要被去重并排序的 list
-     *
      * @return <T> List - 去重并排序之后的 ArrayList
      */
     public <T> List<T> collectionDeduplicateAndResort(Collection<T> list) {
@@ -245,7 +234,6 @@ public class Utils {
      * 将传入的 list 去重并排序
      *
      * @param list - 需要被去重并排序的 list
-     *
      * @return 去重并排序之后的 list
      */
     public List<String> resortList(List<String> list) {
@@ -266,7 +254,6 @@ public class Utils {
      * 判断 JavCode 的 Release Date 是否已经超出了预设的 filter
      *
      * @param date - JavCdoe 的 Release Date
-     *
      * @return int: -1 - releaseDate + filter < now; 1 - releaseDate + filter > now
      */
     public int isReleaseDateOverFilter(String date) {
@@ -294,7 +281,6 @@ public class Utils {
      * 根据文件路径读取 CSV 文件的内容
      *
      * @param filePath - CSV 文件的绝对地址
-     *
      * @return
      */
     public List<String> readFromCSV(String filePath) {
@@ -435,7 +421,6 @@ public class Utils {
      * Excel, CSV 列号转换成数字, 方便 poi 后续操作
      *
      * @param excelNum - excel, csv 文件中对应的列号
-     *
      * @return
      */
     public int excelNum2Digit(String excelNum) {
@@ -457,7 +442,6 @@ public class Utils {
      * 避免写入之后的数据格式不正确
      *
      * @param data - 需要进行数据清理的内容
-     *
      * @return
      */
     public String escapeSpecialCharacters(String data) {
