@@ -235,7 +235,7 @@ public class CSVUtils {
             logger.debug(inputFilePath + " 的 numberOfRecordsRequired = " + numberOfRecordsRequired + ", 请重新确认数据集数量");
         }
 
-        // 开始写入
+        // 开始正式写入 - Guest 数据集
         if (role.equals(Constants.ROLE_GUEST)) {
             int numberOfGuest = Integer.parseInt(utils.getPropValue("number_of_guest"));
 
@@ -301,7 +301,7 @@ public class CSVUtils {
                     }
                 }
             }
-        } else {
+        } else { // 开始正式写入 - Host 数据集
             // 写入 header
             String header = headers[0];
             for (int col = splitFeaturesIndex; col < headerLength; col++) {
@@ -336,7 +336,7 @@ public class CSVUtils {
 
                         lineData = record[0];
 
-                        for (int col = 0; col < splitFeaturesIndex; col++) {
+                        for (int col = splitFeaturesIndex; col < headerLength; col++) {
                             lineData += Constants.COMMA + record[col];
                         }
 
