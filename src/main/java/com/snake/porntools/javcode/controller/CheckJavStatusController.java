@@ -17,10 +17,12 @@ import java.util.*;
 public class CheckJavStatusController {
     private static final Logger logger = LoggerFactory.getLogger(CheckJavStatusController.class);
 
-    private static List<String> javCodeList = new ArrayList<String>();
-    private static List<String> duplicateJavCodeList = new ArrayList<String>();
-    private static List<String> downloadableJavCodeList = new ArrayList<String>();
-    private static List<String> chineseSubtitlesJavCodeList = new ArrayList<String>();
+    private static final Utils utils = new Utils();
+
+    private static final List<String> javCodeList = new ArrayList<>();
+    private static List<String> duplicateJavCodeList = new ArrayList<>();
+    private static final List<String> downloadableJavCodeList = new ArrayList<>();
+    private static final List<String> chineseSubtitlesJavCodeList = new ArrayList<>();
 
     /**
      * 任务的流程如下:
@@ -30,24 +32,22 @@ public class CheckJavStatusController {
      * 4. 依次将这些 JavCode 组装成 Http Request, 并进行请求.
      * 5. 解析返回的 Http Response, 判断当前 JavCode 是否 包含磁链 或 中文磁链
      * 6. 将所有 JavCode 都检索完毕之后, 将检索完的 JavCode 写入到一个新 txt 文件中.
-     *
-     * @throws IOException
      */
     public void taskStart() throws IOException {
         logger.info("开始执行 CheckJavStatusController.taskStart()...");
         long startTime = System.nanoTime();
 
-        File file = new File(new Utils().getPropValue("input_javcode_file")); //设定为当前文件夹
+        File file = new File(utils.getPropValue("input_javcode_file")); //设定为当前文件夹
 
         if (!file.exists()) {
             logger.info(file.getAbsolutePath() + " 文件不存在.");
         } else {
-            javCodeList = parseJavCode(file);
-            duplicateJavCodeList = new Utils().findCollectionDuplicateElements(javCodeList);
+            parseJavCode(file);
+            duplicateJavCodeList = utils.findCollectionDuplicateElements(javCodeList);
 
             if (!javCodeList.isEmpty()) {
-                List<String> urlList = new ArrayList<String>();
-                String url = "";
+                List<String> urlList = new ArrayList<>();
+                String url;
                 for (String javCode : javCodeList) {
                     url = Constants.JAVDB_URL.replace(Constants.JAV_CODE, javCode);
 
@@ -55,9 +55,9 @@ public class CheckJavStatusController {
                 }
 
                 List<Map<String, String>> htmlList = new HttpClientUtils().sendHttpRequestList(Constants.REQUEST_TYPE_GET, urlList, Constants.JAVDB_HEADERS, new HashMap<>());
-                String responseCode = "";
-                String html = "";
-                String javCode = "";
+                String responseCode;
+                String html;
+                String javCode;
                 for (int i = 0; i < htmlList.size(); i++) {
                     Map<String, String> htmlMap = htmlList.get(i);
                     responseCode = htmlMap.get(Constants.RESPONSE_CODE);
@@ -86,18 +86,18 @@ public class CheckJavStatusController {
         }
 
         if (!downloadableJavCodeList.isEmpty() || !chineseSubtitlesJavCodeList.isEmpty()) {
-            Map<String, List<String>> javsMap = new HashMap<String, List<String>>();
+            Map<String, List<String>> javsMap = new HashMap<>();
 
-            javsMap.put(Constants.DUPLICATE_JAV_CODE_LIST, new Utils().collectionDeduplicateAndResort(duplicateJavCodeList));
-            javsMap.put(Constants.DOWNLOADABLE_JAV_CODE_LIST, new Utils().collectionDeduplicateAndResort(downloadableJavCodeList));
-            javsMap.put(Constants.CHINESE_SUBTITLES_JAV_CODE_LIST, new Utils().collectionDeduplicateAndResort(chineseSubtitlesJavCodeList));
+            javsMap.put(Constants.DUPLICATE_JAV_CODE_LIST, utils.collectionDeduplicateAndResort(duplicateJavCodeList));
+            javsMap.put(Constants.DOWNLOADABLE_JAV_CODE_LIST, utils.collectionDeduplicateAndResort(downloadableJavCodeList));
+            javsMap.put(Constants.CHINESE_SUBTITLES_JAV_CODE_LIST, utils.collectionDeduplicateAndResort(chineseSubtitlesJavCodeList));
 
-            new TxtWriterUtils().txtWriter(new Utils().getPropValue("export_javcode_file"), javsMap);
+            new TxtWriterUtils().txtWriter(utils.getPropValue("export_javcode_file"), javsMap);
         } else {
             logger.info("\"JavCode 检测结果.txt\" 没有任何内容写入!");
         }
 
-        logger.info("CheckJavStatusController.taskStart() 总用时: " + new Utils().calculatingTimeDiff(System.nanoTime() - startTime));
+        logger.info("CheckJavStatusController.taskStart() 总用时: " + utils.calculatingTimeDiff(System.nanoTime() - startTime));
 
         logger.info("CheckJavStatusController.taskStart() 执行完毕.");
     }
@@ -107,24 +107,15 @@ public class CheckJavStatusController {
      * 经过一些数据清理之后, 将真正的 JavCode 放入到一个 List<String> 返回
      *
      * @param file - 待检测的 JavCode.txt
-     * @return List<String> - 清理完毕的 JavCode
-     * @throws IOException
      */
-    private List<String> parseJavCode(File file) throws IOException {
-        Reader reader = null;
-        FileReader fileReader = null;
-
-        List<String> javCodeList = new ArrayList<String>();
-        String lineString = "";
+    private void parseJavCode(File file) {
+        String lineString;
 
         int line = 1;
 
-        try {
-            fileReader = new FileReader(file);
-            reader = new BufferedReader(fileReader);
-
+        try (FileReader fileReader = new FileReader(file); BufferedReader reader = new BufferedReader(fileReader)) {
             // 一次读入一行, 直到读入 null, 即文件结束
-            while ((lineString = ((BufferedReader) reader).readLine()) != null) {
+            while ((lineString = reader.readLine()) != null) {
                 if (!lineString.isEmpty()) {
                     String[] temp = lineString.split(Constants.SPACE_SEPARATOR);
                     String javCode = temp[0];
@@ -148,17 +139,7 @@ public class CheckJavStatusController {
             }
         } catch (IOException e) {
             logger.debug(e.getMessage() + ", Line Number: " + line, e);
-        } finally {
-            if (fileReader != null) {
-                fileReader.close();
-            }
-
-            if (reader != null) {
-                reader.close();
-            }
         }
-
-        return javCodeList;
     }
 
     /**
@@ -169,7 +150,7 @@ public class CheckJavStatusController {
      * @return Map    - key: resourceStatus - 影片的 <资源状态>; key: releaseDate - 影片的 <发布日期>
      */
     private Map<String, String> parseJavDBHTML(String javCode, String html) {
-        Map<String, String> javCodeMap = new HashMap<String, String>();
+        Map<String, String> javCodeMap = new HashMap<>();
 
         String resourceStatus = Constants.NO_RESOURCES;
         String releaseDate = "";
@@ -179,19 +160,19 @@ public class CheckJavStatusController {
             Document document = Jsoup.parse(html);
 
             Elements body = document.getElementsByTag("body");
-            Elements section = body.first().getElementsByClass("section");
-            Elements container = section.first().getElementsByClass("container");
-            Elements movieList = container.first().getElementsByClass("movie-list");
+            Elements section = Objects.requireNonNull(body.first()).getElementsByClass("section");
+            Elements container = Objects.requireNonNull(section.first()).getElementsByClass("container");
+            Elements movieList = Objects.requireNonNull(container.first()).getElementsByClass("movie-list");
 
             if (!movieList.isEmpty()) {
-                Elements movieListChildren = movieList.first().children();
+                Elements movieListChildren = Objects.requireNonNull(movieList.first()).children();
 
                 for (Element item : movieListChildren) {
                     Elements videoTitle = item.getElementsByClass("video-title");
-                    Elements uidCode = videoTitle.first().getElementsByTag("strong");
+                    Elements uidCode = Objects.requireNonNull(videoTitle.first()).getElementsByTag("strong");
 
                     // 获取影片的 uid
-                    String uid = uidCode.first().text();
+                    String uid = Objects.requireNonNull(uidCode.first()).text();
                     // 获取影片的 发布日期
                     Elements meta = item.getElementsByClass("meta");
 
@@ -204,13 +185,13 @@ public class CheckJavStatusController {
                             Elements addons = item.getElementsByClass("has-addons");
 
                             if (!addons.isEmpty()) {
-                                Elements isDownloadableSpan = addons.first().getElementsByClass(Constants.DOWNLOADABLE_SPAN_TAG);
+                                Elements isDownloadableSpan = Objects.requireNonNull(addons.first()).getElementsByClass(Constants.DOWNLOADABLE_SPAN_TAG);
                                 if (!isDownloadableSpan.isEmpty()) {
                                     resourceStatus = Constants.HAS_DOWNLOAD_RESOURCES;
                                     break;
                                 }
 
-                                Elements isChineseSubtitlesSpan = addons.first().getElementsByClass(Constants.CHINESE_SUBTITLES_SPAN_TAG);
+                                Elements isChineseSubtitlesSpan = Objects.requireNonNull(addons.first()).getElementsByClass(Constants.CHINESE_SUBTITLES_SPAN_TAG);
                                 if (!isChineseSubtitlesSpan.isEmpty()) {
                                     resourceStatus = Constants.HAS_CHINESE_SUBTITLES_RESOURCES;
                                     break;

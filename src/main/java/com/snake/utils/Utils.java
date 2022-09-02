@@ -6,7 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.util.*;
@@ -26,8 +26,8 @@ public class Utils {
         Properties props = new Properties();
 
         try {
-            FileInputStream input = new FileInputStream(new File(Constants.PROP_FILE_NAME));
-            props.load(new InputStreamReader(input, Charset.forName("UTF-8")));
+            FileInputStream input = new FileInputStream(Constants.PROP_FILE_NAME);
+            props.load(new InputStreamReader(input, StandardCharsets.UTF_8));
 
             value = props.getProperty(key);
         } catch (IOException e) {
@@ -44,14 +44,14 @@ public class Utils {
      * @return List
      */
     public List<String> getPropLists(String key) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
-        String value = "";
+        String value;
         Properties props = new Properties();
 
         try {
-            FileInputStream input = new FileInputStream(new File(Constants.PROP_FILE_NAME));
-            props.load(new InputStreamReader(input, Charset.forName("UTF-8")));
+            FileInputStream input = new FileInputStream(Constants.PROP_FILE_NAME);
+            props.load(new InputStreamReader(input, StandardCharsets.UTF_8));
 
             value = props.getProperty(key);
             String[] valueLists = value.split(";");
@@ -71,15 +71,14 @@ public class Utils {
      *
      * @param propertiesPath - 指定一个特定的 properties 文件位置
      * @param key            - properties 文件中的 key
-     * @return
      */
     public String getPropValue(String propertiesPath, String key) {
         String value = "";
         Properties props = new Properties();
 
         try {
-            FileInputStream input = new FileInputStream(new File(propertiesPath));
-            props.load(new InputStreamReader(input, Charset.forName("UTF-8")));
+            FileInputStream input = new FileInputStream(propertiesPath);
+            props.load(new InputStreamReader(input, StandardCharsets.UTF_8));
 
             value = props.getProperty(key);
         } catch (IOException e) {
@@ -94,17 +93,16 @@ public class Utils {
      *
      * @param propertiesPath - 指定一个特定的 properties 文件位置
      * @param key            - properties 文件中的 key
-     * @return
      */
     public List<String> getPropLists(String propertiesPath, String key) {
-        List<String> list = new ArrayList<String>();
+        List<String> list = new ArrayList<>();
 
-        String value = "";
+        String value;
         Properties props = new Properties();
 
         try {
-            FileInputStream input = new FileInputStream(new File(propertiesPath));
-            props.load(new InputStreamReader(input, Charset.forName("UTF-8")));
+            FileInputStream input = new FileInputStream(propertiesPath);
+            props.load(new InputStreamReader(input, StandardCharsets.UTF_8));
 
             value = props.getProperty(key);
             String[] valueLists = value.split(";");
@@ -124,18 +122,26 @@ public class Utils {
      *
      * @param fullName - 完整的文件名(不包含文件路径, 但可能包含文件扩展名)
      * @param suffix   - 需要添加的后缀
-     * @return
+     * @param index    - index
      */
-    public String appendNameSuffix(String fullName, String suffix) {
-        String newName = "";
+    public String appendNameSuffix(String fullName, String suffix, String index) {
+        String newName;
 
         if (fullName.contains(Constants.DOT)) {
             String name = fullName.substring(0, fullName.lastIndexOf(Constants.DOT));
             String extension = fullName.substring(fullName.lastIndexOf(Constants.DOT) + 1);
 
-            newName = name + suffix + Constants.DOT + extension;
+            if (StringUtils.isNotBlank(index)) {
+                newName = name + suffix + Constants.UNDERSCORE + index + Constants.DOT + extension;
+            } else {
+                newName = name + suffix + Constants.DOT + extension;
+            }
         } else {
-            newName = fullName + suffix;
+            if (StringUtils.isNotBlank(index)) {
+                newName = fullName + suffix + Constants.UNDERSCORE + index;
+            } else {
+                newName = fullName + suffix;
+            }
         }
 
         return newName;
@@ -146,7 +152,6 @@ public class Utils {
      * timeDiff 是基于 System.nanoTime() 计算出来的
      *
      * @param timeDiff - 需要转换的long类型时间
-     * @return
      */
     public String calculatingTimeDiff(long timeDiff) {
         final long day = TimeUnit.NANOSECONDS.toDays(timeDiff);
@@ -195,8 +200,8 @@ public class Utils {
             return new ArrayList<>();
         }
 
-        HashSet<T> set = new HashSet<T>();
-        List<T> duplicateElements = new ArrayList<T>();
+        HashSet<T> set = new HashSet<>();
+        List<T> duplicateElements = new ArrayList<>();
 
         for (T t : list) {
             if (set.contains(t)) {
@@ -220,12 +225,12 @@ public class Utils {
             return new ArrayList<>();
         }
 
-        List<T> sortedList = new ArrayList<T>();
+        List<T> sortedList;
 
         Set<T> set = new HashSet<>(list);
         sortedList = new ArrayList<>(set);
 
-        java.util.Collections.sort(sortedList, Collator.getInstance());
+        sortedList.sort(Collator.getInstance());
 
         return sortedList;
     }
@@ -237,14 +242,14 @@ public class Utils {
      * @return 去重并排序之后的 list
      */
     public List<String> resortList(List<String> list) {
-        List<String> sortedList = new ArrayList<String>();
+        List<String> sortedList = new ArrayList<>();
 
         if (!list.isEmpty()) {
-            LinkedHashSet<String> set = new LinkedHashSet<String>(list.size());
+            LinkedHashSet<String> set = new LinkedHashSet<>(list.size());
             set.addAll(list);
             sortedList.addAll(set);
 
-            java.util.Collections.sort(sortedList, Collator.getInstance());
+            sortedList.sort(Collator.getInstance());
         }
 
         return sortedList;
@@ -253,7 +258,7 @@ public class Utils {
     /**
      * 判断 JavCode 的 Release Date 是否已经超出了预设的 filter
      *
-     * @param date - JavCdoe 的 Release Date
+     * @param date - JavCode 的 Release Date
      * @return int: -1 - releaseDate + filter < now; 1 - releaseDate + filter > now
      */
     public int isReleaseDateOverFilter(String date) {
@@ -281,7 +286,6 @@ public class Utils {
      * 根据文件路径读取 CSV 文件的内容
      *
      * @param filePath - CSV 文件的绝对地址
-     * @return
      */
     public List<String> readFromCSV(String filePath) {
         ArrayList<String> dataList = new ArrayList<>();
@@ -298,7 +302,7 @@ public class Utils {
             FileReader fileReader = new FileReader(csvFile);
             //构建缓存字符输入流
             buffReader = new BufferedReader(fileReader);
-            String line = "";
+            String line;
             //根据合适的换行符来读取一行数据,赋值给line
             while ((line = buffReader.readLine()) != null) {
                 if (StringUtils.isNotBlank(line)) {
@@ -334,12 +338,9 @@ public class Utils {
     public void writeToCSVFromSingleLine(String filePath, String headLabel, String data, String charsetName, boolean addFlag) {
         BufferedWriter buffWriter = null;
         try {
-            //根据指定路径构建文件对象
-            File csvFile = new File(filePath);
-
             //构建缓存字符输出流 (不推荐使用 OutputStreamWriter)
             //buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath)), StandardCharsets.UTF_8), 1024);
-            buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath), addFlag), charsetName), 1024);
+            buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, addFlag), charsetName), 1024);
 
             //头部不为空则写入头部, 并且换行
             if (StringUtils.isNotBlank(headLabel)) {
@@ -380,12 +381,9 @@ public class Utils {
     public void writeToCSVFromList(String filePath, String headLabel, List<String> dataList, String charsetName, boolean addFlag) {
         BufferedWriter buffWriter = null;
         try {
-            //根据指定路径构建文件对象
-            File csvFile = new File(filePath);
-
             //构建缓存字符输出流 (不推荐使用 OutputStreamWriter)
             //buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath)), StandardCharsets.UTF_8), 1024);
-            buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(filePath), addFlag), charsetName), 1024);
+            buffWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, addFlag), charsetName), 1024);
 
             //头部不为空则写入头部, 并且换行
             if (StringUtils.isNotBlank(headLabel)) {
@@ -421,7 +419,6 @@ public class Utils {
      * Excel, CSV 列号转换成数字, 方便 poi 后续操作
      *
      * @param excelNum - excel, csv 文件中对应的列号
-     * @return
      */
     public int excelNum2Digit(String excelNum) {
         char[] chs = excelNum.toCharArray();
@@ -442,7 +439,6 @@ public class Utils {
      * 避免写入之后的数据格式不正确
      *
      * @param data - 需要进行数据清理的内容
-     * @return
      */
     public String escapeSpecialCharacters(String data) {
         String escapedData = data.replaceAll("\\R", " ");

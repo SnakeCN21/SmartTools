@@ -13,11 +13,13 @@ import java.util.Map;
 public class WeatherMainController {
     private static final Logger logger = LoggerFactory.getLogger(WeatherMainController.class);
 
+    private static final Utils utils = new Utils();
+
     private String sendHttpRequest(String url) {
         String html = "";
 
-        String cityName = new Utils().getPropValue("city_name");
-        String weatherKey = new Utils().getPropValue("weather_key");
+        String cityName = utils.getPropValue("city_name");
+        String weatherKey = utils.getPropValue("weather_key");
 
         url = url.replace(Constants.CITY_NAME, cityName);
         url = url.replace(Constants.WEATHER_KEY, weatherKey);
@@ -46,7 +48,7 @@ public class WeatherMainController {
         JsonElement element = gson.fromJson(html, JsonElement.class);
         JsonObject weatherObj = element.getAsJsonObject();
 
-        logger.info("WeatherMainController.weatherCheck() 总用时: " + new Utils().calculatingTimeDiff(System.nanoTime() - startTime));
+        logger.info("WeatherMainController.weatherCheck() 总用时: " + utils.calculatingTimeDiff(System.nanoTime() - startTime));
 
         logger.info("WeatherMainController.weatherCheck() 执行完毕.");
     }
@@ -62,7 +64,7 @@ public class WeatherMainController {
         JsonElement element = gson.fromJson(html, JsonElement.class);
         JsonObject lifeLevelObj = element.getAsJsonObject();
 
-        logger.info("WeatherMainController.lifeLevelCheck() 总用时: " + new Utils().calculatingTimeDiff(System.nanoTime() - startTime));
+        logger.info("WeatherMainController.lifeLevelCheck() 总用时: " + utils.calculatingTimeDiff(System.nanoTime() - startTime));
 
         logger.info("WeatherMainController.lifeLevelCheck() 执行完毕.");
     }

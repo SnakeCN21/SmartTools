@@ -14,13 +14,13 @@ import java.util.Map;
 public class TxtWriterUtils {
     private static final Logger logger = LoggerFactory.getLogger(TxtWriterUtils.class);
 
+    private static final Utils utils = new Utils();
+
     /**
      * 将检索完的 JavCode 写入到 txt 文件中.
      *
      * @param fileName - 需要写入的 txt 文件
      * @param javsMap  - key: Constants.DOWNLOADABLE_JAVS - 有磁链的 Javs; Constants.CHINESE_SUBTITLES_JAVS - 有中文磁链的 Javs
-     *
-     * @throws IOException
      */
     public void txtWriter(String fileName, Map<String, List<String>> javsMap) throws IOException {
         logger.info("开始执行 TxtWriterUtils.txtWriter()...");
@@ -60,7 +60,7 @@ public class TxtWriterUtils {
                     String javCode = str[0];
                     String releaseDate = str[1];
 
-                    out.append(javCode + Constants.SPACE_AND_HYPHEN + releaseDate).append(Constants.CARRIAGE_RETURN_TO_LINE);
+                    out.append(javCode).append(Constants.SPACE_AND_HYPHEN).append(releaseDate).append(Constants.CARRIAGE_RETURN_TO_LINE);
                 }
 
                 out.append(Constants.CARRIAGE_RETURN_TO_LINE);
@@ -75,8 +75,8 @@ public class TxtWriterUtils {
                     String javCode = str[0];
                     String releaseDate = str[1];
 
-                    if (new Utils().isReleaseDateOverFilter(releaseDate) < 0) {
-                        out.append(javCode + Constants.SPACE_AND_HYPHEN + releaseDate).append(Constants.CARRIAGE_RETURN_TO_LINE);
+                    if (utils.isReleaseDateOverFilter(releaseDate) < 0) {
+                        out.append(javCode).append(Constants.SPACE_AND_HYPHEN).append(releaseDate).append(Constants.CARRIAGE_RETURN_TO_LINE);
                     } else {
                         out.append(javCode).append(Constants.CARRIAGE_RETURN_TO_LINE);
                     }
@@ -93,7 +93,7 @@ public class TxtWriterUtils {
             logger.info("\n********************************************************************\n"
                     + "文件 " + file.getAbsolutePath() + " 写入完毕.\n"
                     + "共整理了 " + chineseSubtitlesJavCodeList.size() + " 个拥有中文磁链的 JavCode, 以及 " + downloadableJavCodeList.size() + " 个拥有磁链的 JavCode.\n"
-                    + "TxtWriterUtils.txtWriter() 总用时: " + new Utils().calculatingTimeDiff(System.nanoTime() - startTime) + "\n"
+                    + "TxtWriterUtils.txtWriter() 总用时: " + utils.calculatingTimeDiff(System.nanoTime() - startTime) + "\n"
                     + "********************************************************************"
             );
 

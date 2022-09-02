@@ -6,7 +6,7 @@
 
     <groupId>com.snake</groupId>
     <artifactId>smarttools</artifactId>
-    <version>1.8-SNAPSHOT</version>
+    <version>1.9-SNAPSHOT</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -81,20 +81,6 @@
             <version>${poi.version}</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.opencsv/opencsv -->
-        <dependency>
-            <groupId>com.opencsv</groupId>
-            <artifactId>opencsv</artifactId>
-            <version>5.6</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.vladsch.flexmark/flexmark -->
-        <dependency>
-            <groupId>com.vladsch.flexmark</groupId>
-            <artifactId>flexmark</artifactId>
-            <version>0.64.0</version>
-        </dependency>
-
         <!-- https://mvnrepository.com/artifact/org.slf4j/slf4j-api -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -119,20 +105,14 @@
     </dependencies>
 
     <build>
-        <finalName>java_github_crawler</finalName>
+        <finalName>SmartTools</finalName>
         <pluginManagement>
-            <!-- lock down plugins versions to avoid using Maven defaults (maybe moved to parent pom) -->
             <plugins>
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-clean-plugin</artifactId>
                     <version>3.2.0</version>
                 </plugin>
-                <!-- see http://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_war_packaging -->
-                <!--                <plugin>-->
-                <!--                    <artifactId>maven-resources-plugin</artifactId>-->
-                <!--                    <version>3.2.0</version>-->
-                <!--                </plugin>-->
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
@@ -146,27 +126,7 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>3.0.0-M7</version>
-                    <!--                    <configuration>-->
-                    <!--                        <systemPropertyVariables>-->
-                    <!--                            <user.language>zh</user.language>-->
-                    <!--                            <user.region>GB</user.region>-->
-                    <!--                        </systemPropertyVariables>-->
-                    <!--                    </configuration>-->
                 </plugin>
-                <!--                <plugin>-->
-                <!--                    <artifactId>maven-war-plugin</artifactId>-->
-                <!--                    <version>3.3.2</version>-->
-                <!--                </plugin>-->
-                <!--                <plugin>-->
-                <!--                    <groupId>org.apache.maven.plugins</groupId>-->
-                <!--                    <artifactId>maven-install-plugin</artifactId>-->
-                <!--                    <version>3.0.0-M1</version>-->
-                <!--                </plugin>-->
-                <!--                <plugin>-->
-                <!--                    <groupId>org.apache.maven.plugins</groupId>-->
-                <!--                    <artifactId>maven-deploy-plugin</artifactId>-->
-                <!--                    <version>3.0.0-M2</version>-->
-                <!--                </plugin>-->
             </plugins>
         </pluginManagement>
     </build>

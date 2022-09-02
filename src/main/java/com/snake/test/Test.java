@@ -38,12 +38,12 @@ public class Test {
             colsNum[i] = utils.excelNum2Digit(cols[i]);
         }
 
-        List<String> exportList = new ArrayList<String>();
+        List<String> exportList = new ArrayList<>();
 
         List<String> list = utils.readFromCSV(inputFile.getAbsolutePath());
         String rowData;
         String[] tempRowData;
-        StringBuilder convertedRowData = new StringBuilder();
+        StringBuilder convertedRowData;
 
         for (int i = 0; i < list.size(); i++) {
             convertedRowData = new StringBuilder();

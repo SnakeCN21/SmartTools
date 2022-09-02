@@ -3,7 +3,6 @@ package com.snake.utils;
 
 import jodd.http.HttpRequest;
 import jodd.http.HttpResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,10 +21,10 @@ public class HttpClientUtils {
      * @return 请求相应的内容
      */
     public Map<String, String> sendHttpRequest(String requestType, String url, Map<String, String> headers, Map<String, Object> formBody) {
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new HashMap<>();
 
-        HttpRequest request = null;
-        HttpResponse response = null;
+        HttpRequest request;
+        HttpResponse response;
 
         if (Constants.REQUEST_TYPE_GET.equalsIgnoreCase(requestType)) {
             request = HttpRequest.get(url);
@@ -64,26 +63,22 @@ public class HttpClientUtils {
      * @param urlList     - 需要搜索的网址 List
      * @param headers     - request headers
      * @param formBody    - request formBody
-     * @return
      */
     public List<Map<String, String>> sendHttpRequestList(String requestType, List<String> urlList, Map<String, String> headers, Map<String, Object> formBody) {
-        List<Map<String, String>> list = new ArrayList<Map<String, String>>();
-        Map<String, String> map = new HashMap<String, String>();
+        List<Map<String, String>> list = new ArrayList<>();
+        Map<String, String> map;
 
-        HttpRequest request = null;
+        HttpRequest request;
         HttpResponse response = null;
 
-        String url = "";
+        String url;
         boolean isFirstConnection = true;
 
-        String responseCode = "";
-        String html = "";
+        String responseCode;
+        String html;
 
         for (int i = 0; i < urlList.size(); i++) {
             url = urlList.get(i);
-
-            html = "";
-            responseCode = "";
 
             if (Constants.REQUEST_TYPE_GET.equalsIgnoreCase(requestType)) {
                 request = HttpRequest.get(url);
@@ -125,7 +120,7 @@ public class HttpClientUtils {
             responseCode = Integer.toString(response.statusCode());
             html = response.bodyText();
 
-            map = new HashMap<String, String>();
+            map = new HashMap<>();
             map.put(Constants.RESPONSE_CODE, responseCode);
             map.put(Constants.HTML, html);
 
