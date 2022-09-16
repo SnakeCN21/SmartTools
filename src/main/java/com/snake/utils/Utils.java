@@ -1,12 +1,21 @@
 package com.snake.utils;
 
 
+import org.apache.commons.compress.utils.Lists;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.CellValue;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.Collator;
 import java.time.LocalDate;
 import java.util.*;
@@ -283,6 +292,212 @@ public class Utils {
     }
 
     /**
+     * 传入两个List<String>, 通过 flag 求它们的 旧数据/重复的数据/新增的数据
+     *
+     * @param oldList 旧集合
+     * @param newList 新集合
+     * @param flag    1 - 旧数据(差集); 2 - 重复的数据(交集); 3 - 新增的数据(差集)
+     */
+    public static List<String> getCompareList(List<String> oldList, List<String> newList, Integer flag) {
+        Map<String, Integer> map = mapCompare(oldList, newList);
+        List<String> result;
+
+        List<String> oldData = Lists.newArrayList();
+        List<String> addData = Lists.newArrayList();
+        List<String> repeatData = Lists.newArrayList();
+
+        map.forEach((key, value) -> {
+            if (value == 1) {
+                oldData.add(key);
+            } else if (value == 2) {
+                repeatData.add(key);
+            } else {
+                addData.add(key);
+            }
+        });
+
+        if (flag.equals(1)) {
+            result = oldData;
+        } else if (flag.equals(2)) {
+            result = repeatData;
+        } else {
+            result = addData;
+        }
+
+        return result;
+    }
+
+    /**
+     * 对比两个 List<String>, 返回 List 并集
+     *
+     * @param oldList - 旧集合
+     * @param newList - 新集合
+     * @return value: 1 - 旧数据(差集); 2 - 重复的数据(交集); 3 - 新增的数据(差集)
+     */
+    public static Map<String, Integer> mapCompare(List<String> oldList, List<String> newList) {
+        //若知道两个list大小区别较大, 以大的list优先处理
+        Map<String, Integer> map = new HashMap<>(oldList.size());
+
+        //lambda for循环数据量越大, 效率越高, 小数据建议用普通 for 循环
+        oldList.forEach(s -> map.put(s, 1));
+
+        newList.forEach(s -> {
+            if (map.get(s) != null) {
+                //相同的数据
+                map.put(s, 2);
+            }
+
+//            if (map.get(s) != null) {
+//                //相同的数据
+//                map.put(s, 2);
+//            } else {
+//                //若只是比较不同数据，不需要此步骤，浪费资源
+//                map.put(s, 3);
+//            }
+        });
+
+        return map;
+    }
+
+    /**
+     * 读取 xlsx 文件内容, 返回一个 List<List<String>>
+     *
+     * @param filePath - xlsx 文件路径
+     */
+    public List<List<String>> readFromXLSX(String filePath) {
+        File file = new File(filePath);
+
+        if (!file.exists()) {
+            logger.error("文件 " + file.getAbsolutePath() + " 不存在.");
+        } else {
+            FileInputStream fis;
+            XSSFWorkbook wb;
+            XSSFSheet sheet;
+
+            try {
+                fis = new FileInputStream(file);
+
+                wb = new XSSFWorkbook(fis);
+                sheet = wb.getSheetAt(0);
+
+                int lastRowNum = sheet.getPhysicalNumberOfRows();
+
+                List<List<String>> list = new ArrayList<>(lastRowNum);
+                List<String> rowData;
+
+                XSSFRow row;
+                int lastCellNum;
+
+                XSSFCell cell;
+                CellType cellType;
+                FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+                CellValue formulaCellValue;
+                CellType formulaCellType;
+
+                for (int x = 0; x < lastRowNum; x++) {
+                    rowData = new ArrayList<>();
+
+                    row = sheet.getRow(x);
+                    lastCellNum = row.getLastCellNum();
+
+                    for (int y = 0; y < lastCellNum; y++) {
+                        cell = row.getCell(y);
+
+                        if (cell == null) {
+                            rowData.add("");
+                        } else {
+                            cellType = cell.getCellType();
+
+                            if (cellType.equals(CellType._NONE) || cellType.equals(CellType.BLANK) || cellType.equals(CellType.ERROR)) {
+                                rowData.add("");
+                            } else if (cellType.equals(CellType.STRING)) {
+                                rowData.add(cell.getStringCellValue());
+                            } else if (cellType.equals(CellType.NUMERIC)) {
+                                rowData.add(Double.toString(cell.getNumericCellValue()));
+                            } else if (cellType.equals(CellType.BOOLEAN)) {
+                                rowData.add(String.valueOf(cell.getBooleanCellValue()));
+                            } else if (cellType.equals(CellType.FORMULA)) {
+                                formulaCellValue = evaluator.evaluate(cell);
+                                formulaCellType = formulaCellValue.getCellType();
+
+                                if (formulaCellType.equals(CellType._NONE) || formulaCellType.equals(CellType.BLANK) || formulaCellType.equals(CellType.ERROR)) {
+                                    rowData.add("");
+                                } else if (formulaCellType.equals(CellType.STRING)) {
+                                    rowData.add(formulaCellValue.getStringValue());
+                                } else if (formulaCellType.equals(CellType.NUMERIC)) {
+                                    rowData.add(Double.toString(formulaCellValue.getNumberValue()));
+                                } else if (formulaCellType.equals(CellType.BOOLEAN)) {
+                                    rowData.add(String.valueOf(formulaCellValue.getBooleanValue()));
+                                }
+                            }
+                        }
+                    }
+
+                    list.add(rowData);
+                }
+
+                return list;
+            } catch (IOException e) {
+                logger.error(e.getMessage(), e);
+            }
+        }
+
+        return new ArrayList<>();
+    }
+
+    /**
+     * 将 String headLabel 和 List<List<String>> dataList 写入到 String filePath
+     *
+     * @param headLabel - 头部标签
+     * @param dataList  - 数据列表
+     * @param filePath  - 文件路径
+     */
+    public void writeToXLSX(String filePath, List<String> headLabel, List<List<String>> dataList) {
+        XSSFWorkbook workbook = new XSSFWorkbook();
+        XSSFSheet sheet = workbook.createSheet();
+
+        XSSFRow row;
+        XSSFCell cell;
+
+        int firstDataRow = 0;
+
+        if (headLabel != null && !headLabel.isEmpty()) {
+            firstDataRow = 1;
+
+            row = sheet.createRow(0);
+
+            //在第一行插入单元格设置值
+            for (int i = 0; i < headLabel.size(); i++) {
+                cell = row.createCell(i);
+                cell.setCellValue(headLabel.get(i));
+            }
+        }
+
+        for (int x = firstDataRow; x < dataList.size(); x++) {
+            row = sheet.createRow(x);
+
+            List<String> data = dataList.get(x);
+            for (int y = 0; y < data.size(); y++) {
+                cell = row.createCell(y);
+                cell.setCellValue(data.get(y));
+            }
+        }
+
+        File file = new File(filePath);
+
+        OutputStream stream;
+        try {
+            stream = Files.newOutputStream(file.toPath());
+            workbook.write(stream);
+
+            stream.close();
+        } catch (IOException e) {
+            logger.error(e.getMessage(), e);
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
      * 根据文件路径读取 CSV 文件的内容
      *
      * @param filePath - CSV 文件的绝对地址
@@ -449,6 +664,24 @@ public class Utils {
         }
 
         return escapedData;
+    }
+
+    /**
+     * 在读取某些文本文件内容的时候(例如 csv文件)
+     * 可能文本内本身的内容就带有多余的 双引号, 需要进行一些数据清理
+     * 避免读取之后的数据格式不正确
+     *
+     * @param data - 需要进行数据清理的内容
+     */
+    public String clearStartAndEndQuote(String data) {
+        if (data != null && data.length() >= 2) {
+            if (data.indexOf("\"") == 0) data = data.substring(1); //去掉第一个 "
+            if (data.lastIndexOf("\"") == (data.length() - 1)) data = data.substring(0, data.length() - 1); //去掉最后一个 "
+
+            data = data.replaceAll("\"\"", "\""); //把两个双引号换成一个双引号
+        }
+
+        return data;
     }
 
     public static void main(String[] args) {

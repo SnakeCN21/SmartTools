@@ -73,15 +73,19 @@ public class CSVUtils {
 
         // 找出 特征 id 和 y 在 record 数组中的 index
         for (int col = 0; col < headers.length; col++) {
-            if (col > 1) {
-                header += Constants.COMMA + (Constants.FEATURE_X + (col - 2));
+//            if (col > 1) {
+//                header += Constants.COMMA + (Constants.FEATURE_X + (col - 2));
+//            }
+
+            if (featureIDName.equals(utils.clearStartAndEndQuote(headers[col]).trim())) {
+                indexOfFeatureID = col;
+                continue;
+            } else if (featureYName.equals(utils.clearStartAndEndQuote(headers[col]).trim())) {
+                indexOfFeatureY = col;
+                continue;
             }
 
-            if (featureIDName.equals(headers[col].trim())) {
-                indexOfFeatureID = col;
-            } else if (featureYName.equals(headers[col].trim())) {
-                indexOfFeatureY = col;
-            }
+            header += Constants.COMMA + utils.clearStartAndEndQuote(headers[col]).trim();
         }
 
         if (indexOfFeatureID < 0) {
@@ -127,14 +131,14 @@ public class CSVUtils {
             record = records.get(row).split(Constants.COMMA);
 
             lineData = "";
-            lineData += record[indexOfFeatureID] + Constants.COMMA + record[indexOfFeatureY];
+            lineData += utils.escapeSpecialCharacters(utils.clearStartAndEndQuote(record[indexOfFeatureID])).trim() + Constants.COMMA + utils.escapeSpecialCharacters(utils.clearStartAndEndQuote(record[indexOfFeatureY])).trim();
 
             for (int col = 0; col < headerLength; col++) {
                 if (col == indexOfFeatureID || col == indexOfFeatureY) {
                     continue;
                 }
 
-                lineData += Constants.COMMA + record[col];
+                lineData += Constants.COMMA + utils.escapeSpecialCharacters(utils.clearStartAndEndQuote(record[col])).trim();
             }
 
             utils.writeToCSVFromSingleLine(filePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
