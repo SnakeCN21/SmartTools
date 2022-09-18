@@ -1,6 +1,9 @@
 package com.snake.utils;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 public class Constants {
@@ -50,22 +53,24 @@ public class Constants {
 
     /******************************************************* Porntools start *******************************************************/
     public static final String JAV_CODE = "jav_code";
+    public static final String EXPIRES_DATE_FORMAT = "expires_date_format";
 
     public static final String JAVDB_URL = "https://javdb.com/search?q=jav_code&f=all";
 
+    public static final DateFormat JAVDB_DF = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH);
+
     public static final Map<String, String> JAVDB_HEADERS = new HashMap<String, String>() {{
         put("content-type", "text/html; charset=utf-8");
-        put("accept-language", "zh-CN,zh;q=0.9");
-        put("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.113 Safari/537.36");
-        put("cookie", "theme=auto; locale=zh; over18=1; _jdb_session=k1TjZv98k7ehpdrbWgYsaTDq%2FFV4TDV60caoU5kqJ150hY9N%2BmKHwPZUzIKVcFyhES%2Fg2rR8%2FslXMnPiBmUwriHOGkVuZzaUK%2BJ4uL93npGPYUdqbKSx1OnccElFEZlXgMUWQ%2Bh6L%2F85QTPBFIKDheUGRoHPIKdrDOb9qyw9Qo91gASNOYA7o7Q4WSNij0xBsVTdUAdlb2UAZrUMDgKl2i%2BHuZI7ZTH6pa0i501zS%2BL4b3pecQTBCC0KUvt%2BrbrKA6lUyAcC%2BHvUlzCqJh7y0PlqbNIW1LIfszSlXvBARFqTdKHbLLuLFvglreen4TWEdkzmv0gdmDbwQDDdjJlYInMGFFoMnetgW7Q7OzetMPCqQLvW82M9ykPE7S3hVFBtSOY%3D--dz5k%2Fq1Mp2WC1Lx8--%2FsuF1iV0bxV7XUfPkivIPg%3D%3D");
+        put("date", "date_format");
+        put("set-cookie", "_jdb_session=gqVNYpjlksg86FrqeOXyypjF84FCsvYNBLyQPH5dvVSynvOrR49%2B574TxqI%2BUgHKBfS4f8zCtWtPjZzoFxjcG68oYZYqqVcDWw45hIZDZXQcfK7qQLyqt9qkpmbYW55C6%2BSij7j2vw62cm4us62%2BEsfDjNaPOV6jP1H3kKtk%2FGsmbPO5sm1A9bJEzn2XtlnWVKxIj8YZFWEkFQ042o7BL7Eky6q%2BMVmsZfJRsmlFsUTYzOmjwQ0crDC3euNAn6woiuygoPCwzz9qoEGeAcSjlKzhzRt6xjnbgTQ7P3m8bkm%2F4wOU6LJWwd5vEOqNGZQClqkky7MJsRfuuKeN8kMwOioG%2BqEKKnzTvTSKw748YwgqGJYq9sBUE0bVtEz89MnvnBo%3D--P%2BNCLNmugrBc1KYB--WtvJQ6ZWRLE4sY%2BUeufK7Q%3D%3D; path=/; expires=expires_date_format; secure; HttpOnly; SameSite=None");
     }};
 
     // 每轮 Http 请求间隔固定休息的时间, 单位: s
     public static final int HTTP_REQUEST_SLEEP_TIME = 5;
     // 每轮 Http 请求间隔最短休息的时间, 单位: s
-    public static final int HTTP_REQUEST_MIN_SLEEP_TIME = 2;
+    public static final int HTTP_REQUEST_MIN_SLEEP_TIME = 3;
     // 每轮 Http 请求间隔随机休息的时间, 单位: s
-    public static final int HTTP_REQUEST_RANDOM_SLEEP_TIME = 4;
+    public static final int HTTP_REQUEST_RANDOM_SLEEP_TIME = 3;
 
     public static final String DUPLICATE_JAV_CODE_LIST = "duplicateJavCodeList";
     public static final String DOWNLOADABLE_JAV_CODE_LIST = "downloadableJavCodeList";

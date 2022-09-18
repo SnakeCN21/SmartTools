@@ -54,7 +54,11 @@ public class CheckJavStatusController {
                     urlList.add(url);
                 }
 
-                List<Map<String, String>> htmlList = new HttpClientUtils().sendHttpRequestList(Constants.REQUEST_TYPE_GET, urlList, Constants.JAVDB_HEADERS, new HashMap<>());
+                Map<String, String> headers = Constants.JAVDB_HEADERS;
+                headers.put("date", getFormatDate(0));
+                headers.put("set-cookie", headers.get("set-cookie").replace(Constants.EXPIRES_DATE_FORMAT, getFormatDate(14)));
+
+                List<Map<String, String>> htmlList = new HttpClientUtils().sendHttpRequestList(Constants.REQUEST_TYPE_GET, urlList, headers, new HashMap<>());
                 String responseCode;
                 String html;
                 String javCode;
@@ -207,6 +211,17 @@ public class CheckJavStatusController {
         javCodeMap.put(Constants.RELEASE_DATE, releaseDate);
 
         return javCodeMap;
+    }
+
+    /**
+     * 将日期格式转换为 JAVDB header 里需要的特定格式
+     *
+     * @param offset - 偏移量, 用于计算 expires 时间, 如果只要转换当前时间的话, offset 设为 0 即可. 单位: d
+     */
+    private String getFormatDate(long offset) {
+        Constants.JAVDB_DF.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        return Constants.JAVDB_DF.format(new Date(new Date().getTime() + offset * 24 * 60 * 60 * 1000));
     }
 
     public static void main(String[] args) {

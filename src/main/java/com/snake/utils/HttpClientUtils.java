@@ -140,4 +140,8 @@ public class HttpClientUtils {
         return list;
     }
 
+    public void main(String[] args) {
+        
+    }
+
 }
