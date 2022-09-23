@@ -1,4 +1,4 @@
-package com.snake.test;
+package com.snake.weiyantemp;
 
 import com.snake.utils.Constants;
 import com.snake.utils.Utils;
@@ -10,8 +10,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Test {
-    private static final Logger logger = LoggerFactory.getLogger(Test.class);
+public class ProfessorWangUtils {
+    private static final Logger logger = LoggerFactory.getLogger(ProfessorWangUtils.class);
 
     private static final Utils utils = new Utils();
 
@@ -84,13 +84,13 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        String file1 = "D:/车主手机号信息_1.csv";
-        String file2 = "D:/客户Y值统计 - 电销2021.csv";
+        String file1 = "C:\\Users\\Fei Huang\\Downloads\\4S店\\淄博锦诚售后数据手机号.csv";
+        String file2 = "C:\\Users\\Fei Huang\\Downloads\\4S店\\电销客户Y值统计 - 副本.csv";
 
-        String file1_1 = "D:/车主手机号信息-md5.csv";
-        String file2_1 = "D:/客户Y值统计 - 电销2021-md5.csv";
+        String file1_1 = "C:\\Users\\Fei Huang\\Downloads\\4S店\\淄博锦诚售后数据手机号-md5.csv";
+        String file2_1 = "C:\\Users\\Fei Huang\\Downloads\\4S店\\电销客户Y值统计 - 副本-md5.csv";
 
-        new Test().convertCSVtoMD5(file1, file1_1, Boolean.TRUE, Constants.SEMICOLON, new String[]{"D", "T", "V"});
-        new Test().convertCSVtoMD5(file2, file2_1, Boolean.TRUE, Constants.COMMA, new String[]{"C"});
+        new ProfessorWangUtils().convertCSVtoMD5(file1, file1_1, Boolean.TRUE, Constants.COMMA, new String[]{"C"});
+        new ProfessorWangUtils().convertCSVtoMD5(file2, file2_1, Boolean.TRUE, Constants.COMMA, new String[]{"C"});
     }
 }
