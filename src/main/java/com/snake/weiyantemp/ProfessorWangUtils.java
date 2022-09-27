@@ -3,6 +3,7 @@ package com.snake.weiyantemp;
 import com.snake.utils.Constants;
 import com.snake.utils.Utils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,8 +61,10 @@ public class ProfessorWangUtils {
 
                     for (int y : colsNum) {
                         if (x == y) {
-                            tempStr = DigestUtils.md5Hex(tempStr.getBytes());
-                            break;
+                            if (StringUtils.isNotBlank(tempStr)) {
+                                tempStr = DigestUtils.md5Hex(tempStr.getBytes());
+                                break;
+                            }
                         }
                     }
 
@@ -84,13 +87,13 @@ public class ProfessorWangUtils {
     }
 
     public static void main(String[] args) {
-        String file1 = "C:\\Users\\Fei Huang\\Downloads\\4S店\\淄博锦诚售后数据手机号.csv";
-        String file2 = "C:\\Users\\Fei Huang\\Downloads\\4S店\\电销客户Y值统计 - 副本.csv";
+        String file1 = "C:\\Users\\Fei Huang\\Downloads\\无老板20220926\\茶室棋牌室手机号20220923.csv";
+        String file2 = "C:\\Users\\Fei Huang\\Downloads\\无老板20220926\\回溯数据，手机号+时间20220923.csv";
 
-        String file1_1 = "C:\\Users\\Fei Huang\\Downloads\\4S店\\淄博锦诚售后数据手机号-md5.csv";
-        String file2_1 = "C:\\Users\\Fei Huang\\Downloads\\4S店\\电销客户Y值统计 - 副本-md5.csv";
+        String file1_1 = "C:\\Users\\Fei Huang\\Downloads\\无老板20220926\\茶室棋牌室手机号20220923-md5.csv";
+        String file2_1 = "C:\\Users\\Fei Huang\\Downloads\\无老板20220926\\回溯数据，手机号+时间20220923-md5.csv";
 
-        new ProfessorWangUtils().convertCSVtoMD5(file1, file1_1, Boolean.TRUE, Constants.COMMA, new String[]{"C"});
-        new ProfessorWangUtils().convertCSVtoMD5(file2, file2_1, Boolean.TRUE, Constants.COMMA, new String[]{"C"});
+        new ProfessorWangUtils().convertCSVtoMD5(file1, file1_1, Boolean.TRUE, Constants.COMMA, new String[]{"F"});
+        new ProfessorWangUtils().convertCSVtoMD5(file2, file2_1, Boolean.TRUE, Constants.COMMA, new String[]{"A"});
     }
 }

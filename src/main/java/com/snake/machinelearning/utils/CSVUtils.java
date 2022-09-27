@@ -89,10 +89,10 @@ public class CSVUtils {
         }
 
         if (indexOfFeatureID < 0) {
-            logger.debug(dataPath + " 未找到 Feature ID Header");
+            logger.debug(dataPath + " 未找到 Feature ID.");
         }
         if (indexOfFeatureY < 0) {
-            logger.debug(dataPath + " 未找到 Feature Y Header");
+            logger.debug(dataPath + " 未找到 Feature Y.");
         }
 
         String percentageOfValidationSetOfTotalSet = utils.getPropValue("percentage_of_validation_set_of_total_set");
@@ -158,30 +158,53 @@ public class CSVUtils {
         logger.info("开始执行 CSVUtils.splitTrainingAndValidationSet()...");
         long startTime = System.nanoTime();
 
+        List<String> trainingSet = utils.readFromCSV(trainingSetPath);
+        List<String> validationSet = utils.readFromCSV(validationSetPath);
+
+        int trainingSetSize = trainingSet.size();
+        int validationSetSize = validationSet.size();
+
+        List<String> tempTrainingSet;
+        List<String> tempValidationSet;
+
         String suffixOfTrainingSetForGuest = utils.getPropValue("suffix_of_training_set_for_guest");
         String suffixOfTrainingSetForHost = utils.getPropValue("suffix_of_training_set_for_host");
         String suffixOfValidationSetForGuest = utils.getPropValue("suffix_of_validation_set_for_guest");
         String suffixOfValidationSetForHost = utils.getPropValue("suffix_of_validation_set_for_host");
 
-        String trainingSetFileNameForHost = utils.appendNameSuffix(dataFileName, suffixOfTrainingSetForHost, "");
-        String validationSetFileNameForHost = utils.appendNameSuffix(dataFileName, suffixOfValidationSetForHost, "");
+        int numberOfHost = Integer.parseInt(utils.getPropValue("number_of_host"));
 
-        // 写入 训练集 - Host
-        writeDataSetForHostAndGuest(trainingSetPath, dataFolder + trainingSetFileNameForHost, Constants.ROLE_HOST);
-        // 写入 验证集 - Host
-        writeDataSetForHostAndGuest(validationSetPath, dataFolder + validationSetFileNameForHost, Constants.ROLE_HOST);
+        for (int i = 0; i < numberOfHost; i++) {
+            String trainingSetFileNameForHost = utils.appendNameSuffix(dataFileName, suffixOfTrainingSetForHost, String.valueOf(i));
+            String validationSetFileNameForHost = utils.appendNameSuffix(dataFileName, suffixOfValidationSetForHost, String.valueOf(i));
 
-        int numberOfGuest = Integer.parseInt(utils.getPropValue("number_of_guest"));
+            int tempTrainingSetFromIndex = (new BigDecimal(trainingSetSize).multiply(new BigDecimal(i).divide(new BigDecimal(numberOfHost)))).intValue();
+            int tempTrainingSetToIndex = (new BigDecimal(trainingSetSize).multiply((new BigDecimal(i).add(new BigDecimal(1))).divide(new BigDecimal(numberOfHost)))).intValue();
 
-        for (int i = 0; i < numberOfGuest; i++) {
-            String trainingSetFileNameForGuest = utils.appendNameSuffix(dataFileName, suffixOfTrainingSetForGuest, String.valueOf(i));
-            String validationSetFileNameForGuest = utils.appendNameSuffix(dataFileName, suffixOfValidationSetForGuest, String.valueOf(i));
+            int tempValidationSetFromIndex = new BigDecimal(validationSetSize).multiply(new BigDecimal(i).divide(new BigDecimal(numberOfHost))).intValue();
+            int tempValidationSetToIndex = new BigDecimal(validationSetSize).multiply((new BigDecimal(i).add(new BigDecimal(1))).divide(new BigDecimal(numberOfHost))).intValue();
 
-            // 写入 训练集 - Guest
-            writeDataSetForHostAndGuest(trainingSetPath, dataFolder + trainingSetFileNameForGuest, Constants.ROLE_GUEST);
-            // 写入 验证集 - Guest
-            writeDataSetForHostAndGuest(validationSetPath, dataFolder + validationSetFileNameForGuest, Constants.ROLE_GUEST);
+            tempTrainingSet = trainingSet.subList(tempTrainingSetFromIndex, tempTrainingSetToIndex);
+            tempValidationSet = validationSet.subList(tempValidationSetFromIndex, tempValidationSetToIndex);
+
+            if (i != 0) { // 补全缺失的 header
+                tempTrainingSet.add(0, trainingSet.get(0));
+                tempValidationSet.add(0, validationSet.get(0));
+            }
+
+            // 写入 训练集 - Host
+            writeDataSetForHostAndGuest(tempTrainingSet, dataFolder + trainingSetFileNameForHost, Constants.ROLE_HOST);
+            // 写入 验证集 - Host
+            writeDataSetForHostAndGuest(tempValidationSet, dataFolder + validationSetFileNameForHost, Constants.ROLE_HOST);
         }
+
+        String trainingSetFileNameForGuest = utils.appendNameSuffix(dataFileName, suffixOfTrainingSetForGuest, "");
+        String validationSetFileNameForGuest = utils.appendNameSuffix(dataFileName, suffixOfValidationSetForGuest, "");
+
+        // 写入 训练集 - Guest
+        writeDataSetForHostAndGuest(trainingSet, dataFolder + trainingSetFileNameForGuest, Constants.ROLE_GUEST);
+        // 写入 验证集 - Guest
+        writeDataSetForHostAndGuest(validationSet, dataFolder + validationSetFileNameForGuest, Constants.ROLE_GUEST);
 
         logger.info("CSVUtils.splitDataSetForHostAndGuest() 总用时: " + utils.calculatingTimeDiff(System.nanoTime() - startTime));
         logger.info("CSVUtils.splitDataSetForHostAndGuest() 执行完毕.");
@@ -190,65 +213,30 @@ public class CSVUtils {
     /**
      * 从 inputFilePath 里面读取数据集, 然后按照 role 对应的规则, 写入到 outputFilePath 中
      *
-     * @param inputFilePath  - 输入的数据集文件
+     * @param dataSet        - 输入的数据集
      * @param outputFilePath - 输出的数据集文件
      * @param role           - 角色, Guest or Host
      */
-    private void writeDataSetForHostAndGuest(String inputFilePath, String outputFilePath, String role) {
-        int splitFeaturesIndex;
-        int numberOfRecordsRequired;
+    private void writeDataSetForHostAndGuest(List<String> dataSet, String outputFilePath, String role) {
+        int dataSetSize = dataSet.size();
 
-        String percentageOfFeaturesForGuest = utils.getPropValue("percentage_of_features_for_guest");
-
-        boolean isNeedRandomSplit = Boolean.parseBoolean(utils.getPropValue("is_need_random_split"));
-
-        String percentageOfDataSetForGuest = utils.getPropValue("percentage_of_data_set_for_guest");
-        String percentageOfDataSetForHost = utils.getPropValue("percentage_of_data_set_for_host");
-
-        List<String> records = utils.readFromCSV(inputFilePath);
-        int recordSize = records.size();
-
-        String[] headers = records.get(0).split(Constants.COMMA);
+        String[] headers = dataSet.get(0).split(Constants.COMMA);
         int headerLength = headers.length;
 
+        int splitFeaturesIndex;
+
+        String percentageOfFeaturesForGuest = utils.getPropValue("percentage_of_features_for_guest");
         int needFeaturesForGuest = new BigDecimal(headerLength).multiply(new BigDecimal(percentageOfFeaturesForGuest)).intValue(); // 计算出 Guest 数据集的特征数量
 
-        // 根据 角色 来设定需要摘取的 特征数 以及 记录数
+        // 根据 角色 来设定需要摘取的 特征数
         if (role.equals(Constants.ROLE_GUEST)) {
             splitFeaturesIndex = needFeaturesForGuest > 2 ? needFeaturesForGuest : -1;
-
-            if (isNeedRandomSplit) {
-                numberOfRecordsRequired = new BigDecimal(recordSize).multiply(new BigDecimal(percentageOfDataSetForGuest)).intValue();
-            } else {
-                numberOfRecordsRequired = recordSize;
-            }
         } else {
             splitFeaturesIndex = needFeaturesForGuest > 2 && (headerLength - needFeaturesForGuest) <= (headerLength - 3) ? needFeaturesForGuest : -1;
-
-            if (isNeedRandomSplit) {
-                numberOfRecordsRequired = new BigDecimal(recordSize).multiply(new BigDecimal(percentageOfDataSetForHost)).intValue();
-            } else {
-                numberOfRecordsRequired = recordSize;
-            }
-        }
-
-        if (splitFeaturesIndex < 0) {
-            logger.debug(inputFilePath + " 的 splitFeaturesIndex = " + splitFeaturesIndex + ", 请重新确认特征数量");
-        }
-        if (numberOfRecordsRequired < 0) {
-            logger.debug(inputFilePath + " 的 numberOfRecordsRequired = " + numberOfRecordsRequired + ", 请重新确认数据集数量");
         }
 
         // 开始正式写入 - Guest 数据集
         if (role.equals(Constants.ROLE_GUEST)) {
-            int numberOfGuest = Integer.parseInt(utils.getPropValue("number_of_guest"));
-
-            // 如果 Guest 的节点数大于 1, 则对于每个 Guest 的 特征数量 进行随机设定, 尽可能地保证每个 Guest 的 特征总数 是不一样的.
-            if (numberOfGuest > 1) {
-                splitFeaturesIndex = new Random().nextInt(splitFeaturesIndex - 2) + 3;
-            }
-
-            // 写入 header
             String header = "";
             for (int col = 0; col < splitFeaturesIndex; col++) {
                 if (col == 0) {
@@ -263,50 +251,22 @@ public class CSVUtils {
             String[] record;
             String lineData;
 
-            // 写入 record
-            if (numberOfRecordsRequired == recordSize) {
-                for (int row = 1; row < recordSize; row++) {
-                    record = records.get(row).split(Constants.COMMA);
+            for (int row = 1; row < dataSetSize; row++) {
+                record = dataSet.get(row).split(Constants.COMMA);
 
-                    lineData = "";
+                lineData = "";
 
-                    for (int col = 0; col < splitFeaturesIndex; col++) {
-                        if (col == 0) {
-                            lineData += record[col];
-                        } else {
-                            lineData += Constants.COMMA + record[col];
-                        }
-                    }
-
-                    utils.writeToCSVFromSingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
-                }
-            } else {
-                HashSet<Integer> savedRows = new HashSet<>();
-
-                while (savedRows.size() < numberOfRecordsRequired) {
-                    int rowIndex = new Random().nextInt(numberOfRecordsRequired) + 1;
-
-                    if (!savedRows.contains(rowIndex)) {
-                        record = records.get(rowIndex).split(Constants.COMMA);
-
-                        lineData = "";
-
-                        for (int col = 0; col < splitFeaturesIndex; col++) {
-                            if (col == 0) {
-                                lineData += record[col];
-                            } else {
-                                lineData += Constants.COMMA + record[col];
-                            }
-                        }
-
-                        utils.writeToCSVFromSingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
-
-                        savedRows.add(rowIndex);
+                for (int col = 0; col < splitFeaturesIndex; col++) {
+                    if (col == 0) {
+                        lineData += record[col];
+                    } else {
+                        lineData += Constants.COMMA + record[col];
                     }
                 }
+
+                utils.writeToCSVFromSingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
             }
         } else { // 开始正式写入 - Host 数据集
-            // 写入 header
             String header = headers[0];
             for (int col = splitFeaturesIndex; col < headerLength; col++) {
                 header += Constants.COMMA + headers[col];
@@ -317,38 +277,16 @@ public class CSVUtils {
             String[] record;
             String lineData;
 
-            if (numberOfRecordsRequired == recordSize) {
-                for (int row = 1; row < recordSize; row++) {
-                    record = records.get(row).split(Constants.COMMA);
+            for (int row = 1; row < dataSetSize; row++) {
+                record = dataSet.get(row).split(Constants.COMMA);
 
-                    lineData = record[0];
+                lineData = record[0];
 
-                    for (int col = splitFeaturesIndex; col < headerLength; col++) {
-                        lineData += Constants.COMMA + record[col];
-                    }
-
-                    utils.writeToCSVFromSingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
+                for (int col = splitFeaturesIndex; col < headerLength; col++) {
+                    lineData += Constants.COMMA + record[col];
                 }
-            } else {
-                HashSet<Integer> savedRows = new HashSet<>();
 
-                while (savedRows.size() < numberOfRecordsRequired) {
-                    int rowIndex = new Random().nextInt(numberOfRecordsRequired) + 1;
-
-                    if (!savedRows.contains(rowIndex)) {
-                        record = records.get(rowIndex).split(Constants.COMMA);
-
-                        lineData = record[0];
-
-                        for (int col = splitFeaturesIndex; col < headerLength; col++) {
-                            lineData += Constants.COMMA + record[col];
-                        }
-
-                        utils.writeToCSVFromSingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
-
-                        savedRows.add(rowIndex);
-                    }
-                }
+                utils.writeToCSVFromSingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
             }
         }
     }
