@@ -73,10 +73,6 @@ public class CSVUtils {
 
         // 找出 特征 id 和 y 在 record 数组中的 index
         for (int col = 0; col < headers.length; col++) {
-//            if (col > 1) {
-//                header += Constants.COMMA + (Constants.FEATURE_X + (col - 2));
-//            }
-
             if (featureIDName.equals(utils.clearStartAndEndQuote(headers[col]).trim())) {
                 indexOfFeatureID = col;
                 continue;
@@ -161,15 +157,24 @@ public class CSVUtils {
         List<String> trainingSet = utils.readFromCSV(trainingSetPath);
         List<String> validationSet = utils.readFromCSV(validationSetPath);
 
+        String suffixOfTrainingSetForGuest = utils.getPropValue("suffix_of_training_set_for_guest");
+        String suffixOfValidationSetForGuest = utils.getPropValue("suffix_of_validation_set_for_guest");
+
+        String trainingSetFileNameForGuest = utils.appendNameSuffix(dataFileName, suffixOfTrainingSetForGuest, "");
+        String validationSetFileNameForGuest = utils.appendNameSuffix(dataFileName, suffixOfValidationSetForGuest, "");
+
+        // 写入 训练集 - Guest
+        writeDataSetForHostAndGuest(trainingSet, dataFolder + trainingSetFileNameForGuest, Constants.ROLE_GUEST);
+        // 写入 验证集 - Guest
+        writeDataSetForHostAndGuest(validationSet, dataFolder + validationSetFileNameForGuest, Constants.ROLE_GUEST);
+
         int trainingSetSize = trainingSet.size();
         int validationSetSize = validationSet.size();
 
         List<String> tempTrainingSet;
         List<String> tempValidationSet;
 
-        String suffixOfTrainingSetForGuest = utils.getPropValue("suffix_of_training_set_for_guest");
         String suffixOfTrainingSetForHost = utils.getPropValue("suffix_of_training_set_for_host");
-        String suffixOfValidationSetForGuest = utils.getPropValue("suffix_of_validation_set_for_guest");
         String suffixOfValidationSetForHost = utils.getPropValue("suffix_of_validation_set_for_host");
 
         int numberOfHost = Integer.parseInt(utils.getPropValue("number_of_host"));
@@ -197,14 +202,6 @@ public class CSVUtils {
             // 写入 验证集 - Host
             writeDataSetForHostAndGuest(tempValidationSet, dataFolder + validationSetFileNameForHost, Constants.ROLE_HOST);
         }
-
-        String trainingSetFileNameForGuest = utils.appendNameSuffix(dataFileName, suffixOfTrainingSetForGuest, "");
-        String validationSetFileNameForGuest = utils.appendNameSuffix(dataFileName, suffixOfValidationSetForGuest, "");
-
-        // 写入 训练集 - Guest
-        writeDataSetForHostAndGuest(trainingSet, dataFolder + trainingSetFileNameForGuest, Constants.ROLE_GUEST);
-        // 写入 验证集 - Guest
-        writeDataSetForHostAndGuest(validationSet, dataFolder + validationSetFileNameForGuest, Constants.ROLE_GUEST);
 
         logger.info("CSVUtils.splitDataSetForHostAndGuest() 总用时: " + utils.calculatingTimeDiff(System.nanoTime() - startTime));
         logger.info("CSVUtils.splitDataSetForHostAndGuest() 执行完毕.");
