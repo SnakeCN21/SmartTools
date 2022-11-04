@@ -684,8 +684,34 @@ public class Utils {
         return data;
     }
 
-    public static void main(String[] args) {
+    /**
+     * 生成 times 个随机 2 位小数
+     * @param times - 生成小数的个数
+     */
+    public void generateRandomDecimal(int times) {
+        Random random = new Random();
+        Double decimal;
+        for (int i=0; i<times; i++) {
+            decimal = random.nextDouble();
+            System.out.println((double) Math.round(decimal * 100) / 100);
+        }
+    }
 
+    /**
+     * 生成 times 个随机整数
+     * @param times - 生成整数的个数
+     * @param minimum - 整数的最小边界
+     * @param maximization - 整数的最大边界
+     */
+    public void generateRandomInt(int times, int minimum, int maximization) {
+        Random random = new Random();
+        for (int i=0; i<times; i++) {
+            System.out.println(random.nextInt(maximization) + minimum);
+        }
+    }
+
+    public static void main(String[] args) {
+        new Utils().generateRandomInt(50, 200, 300);
     }
 
 }
