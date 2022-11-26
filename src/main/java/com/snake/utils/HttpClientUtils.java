@@ -101,18 +101,30 @@ public class HttpClientUtils {
                 }
             } else {
                 if (isFirstConnection) {
-                    if (formBody.isEmpty()) {
-                        response = request.connectionKeepAlive(true).send();
-                    } else {
-                        response = request.connectionKeepAlive(true).form(formBody).send();
+                    try {
+                        if (formBody.isEmpty()) {
+                            response = request.connectionKeepAlive(true).send();
+                        } else {
+                            response = request.connectionKeepAlive(true).form(formBody).send();
+                        }
+                    } catch (Exception e) {
+                        logger.error("请求出错: " + url);
+                        logger.error(e.getMessage());
+                        continue;
                     }
 
                     isFirstConnection = false;
                 } else {
-                    if (formBody.isEmpty()) {
-                        response = request.keepAlive(response, true).send();
-                    } else {
-                        response = request.keepAlive(response, true).form(formBody).send();
+                    try {
+                        if (formBody.isEmpty()) {
+                            response = request.keepAlive(response, true).send();
+                        } else {
+                            response = request.keepAlive(response, true).form(formBody).send();
+                        }
+                    } catch (Exception e) {
+                        logger.error("请求出错: " + url);
+                        logger.error(e.getMessage());
+                        continue;
                     }
                 }
             }

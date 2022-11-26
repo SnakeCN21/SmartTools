@@ -55,8 +55,8 @@ public class CheckJavStatusController {
                 }
 
                 Map<String, String> headers = Constants.JAVDB_HEADERS;
-                headers.put("date", getFormatDate(0));
-                headers.put("set-cookie", headers.get("set-cookie").replace(Constants.EXPIRES_DATE_FORMAT, getFormatDate(14)));
+//                headers.put("date", getFormatDate(0));
+//                headers.put("set-cookie", headers.get("set-cookie").replace(Constants.EXPIRES_DATE_FORMAT, getFormatDate(14)));
 
                 List<Map<String, String>> htmlList = new HttpClientUtils().sendHttpRequestList(Constants.REQUEST_TYPE_GET, urlList, headers, new HashMap<>());
                 String responseCode;
