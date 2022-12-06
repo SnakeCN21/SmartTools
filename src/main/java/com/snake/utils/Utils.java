@@ -17,6 +17,7 @@ import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.Collator;
+import java.text.NumberFormat;
 import java.time.LocalDate;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -390,6 +391,10 @@ public class Utils {
 
                 XSSFCell cell;
                 CellType cellType;
+
+                NumberFormat nf = NumberFormat.getInstance();
+                nf.setGroupingUsed(false);
+
                 FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
                 CellValue formulaCellValue;
                 CellType formulaCellType;
@@ -413,7 +418,7 @@ public class Utils {
                             } else if (cellType.equals(CellType.STRING)) {
                                 rowData.add(cell.getStringCellValue());
                             } else if (cellType.equals(CellType.NUMERIC)) {
-                                rowData.add(Double.toString(cell.getNumericCellValue()));
+                                rowData.add(nf.format(cell.getNumericCellValue()));
                             } else if (cellType.equals(CellType.BOOLEAN)) {
                                 rowData.add(String.valueOf(cell.getBooleanCellValue()));
                             } else if (cellType.equals(CellType.FORMULA)) {
@@ -425,7 +430,7 @@ public class Utils {
                                 } else if (formulaCellType.equals(CellType.STRING)) {
                                     rowData.add(formulaCellValue.getStringValue());
                                 } else if (formulaCellType.equals(CellType.NUMERIC)) {
-                                    rowData.add(Double.toString(formulaCellValue.getNumberValue()));
+                                    rowData.add(nf.format(formulaCellValue.getNumberValue()));
                                 } else if (formulaCellType.equals(CellType.BOOLEAN)) {
                                     rowData.add(String.valueOf(formulaCellValue.getBooleanValue()));
                                 }
