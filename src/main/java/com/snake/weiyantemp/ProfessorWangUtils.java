@@ -81,7 +81,7 @@ public class ProfessorWangUtils {
             exportList.add(convertedRowData.toString());
         }
 
-        utils.writeToCSVFromList(exportPath, null, exportList, Constants.CHARSET_GBK, Boolean.FALSE);
+        utils.writeToCSVByList(exportPath, null, exportList, Constants.CHARSET_GBK, Boolean.FALSE);
 
         logger.debug("Test.convertCSVtoMD5() 执行结束. 共计用时: " + utils.calculatingTimeDiff(System.nanoTime() - taskStartTime));
     }

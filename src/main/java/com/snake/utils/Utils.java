@@ -555,7 +555,7 @@ public class Utils {
      * @param filePath  - 文件路径
      * @param addFlag   - 是否追加
      */
-    public void writeToCSVFromSingleLine(String filePath, String headLabel, String data, String charsetName, boolean addFlag) {
+    public void writeToCSVBySingleLine(String filePath, String headLabel, String data, String charsetName, boolean addFlag) {
         BufferedWriter buffWriter = null;
         try {
             //构建缓存字符输出流 (不推荐使用 OutputStreamWriter)
@@ -598,7 +598,7 @@ public class Utils {
      * @param filePath  - 文件路径
      * @param addFlag   - 是否追加
      */
-    public void writeToCSVFromList(String filePath, String headLabel, List<String> dataList, String charsetName, boolean addFlag) {
+    public void writeToCSVByList(String filePath, String headLabel, List<String> dataList, String charsetName, boolean addFlag) {
         BufferedWriter buffWriter = null;
         try {
             //构建缓存字符输出流 (不推荐使用 OutputStreamWriter)

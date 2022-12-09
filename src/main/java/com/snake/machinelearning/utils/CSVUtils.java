@@ -116,7 +116,7 @@ public class CSVUtils {
      * @param indexOfFeatureY  - 特征 y 在 record 数组中的 index
      */
     private void writeTrainingAndValidationSet(String filePath, String header, List<String> records, int startFromRows, int endToRows, int indexOfFeatureID, int indexOfFeatureY) {
-        utils.writeToCSVFromSingleLine(filePath, "", header, Constants.CHARSET_UTF_8, Boolean.TRUE);
+        utils.writeToCSVBySingleLine(filePath, "", header, Constants.CHARSET_UTF_8, Boolean.TRUE);
         int headerLength = header.split(Constants.COMMA).length;
 
         String[] record;
@@ -137,7 +137,7 @@ public class CSVUtils {
                 lineData += Constants.COMMA + utils.escapeSpecialCharacters(utils.clearStartAndEndQuote(record[col])).trim();
             }
 
-            utils.writeToCSVFromSingleLine(filePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
+            utils.writeToCSVBySingleLine(filePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
         }
     }
 
@@ -243,7 +243,7 @@ public class CSVUtils {
                 }
             }
 
-            utils.writeToCSVFromSingleLine(outputFilePath, "", header, Constants.CHARSET_UTF_8, Boolean.TRUE);
+            utils.writeToCSVBySingleLine(outputFilePath, "", header, Constants.CHARSET_UTF_8, Boolean.TRUE);
 
             String[] record;
             String lineData;
@@ -261,7 +261,7 @@ public class CSVUtils {
                     }
                 }
 
-                utils.writeToCSVFromSingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
+                utils.writeToCSVBySingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
             }
         } else { // 开始正式写入 - Host 数据集
             String header = headers[0];
@@ -269,7 +269,7 @@ public class CSVUtils {
                 header += Constants.COMMA + headers[col];
             }
 
-            utils.writeToCSVFromSingleLine(outputFilePath, "", header, Constants.CHARSET_UTF_8, Boolean.TRUE);
+            utils.writeToCSVBySingleLine(outputFilePath, "", header, Constants.CHARSET_UTF_8, Boolean.TRUE);
 
             String[] record;
             String lineData;
@@ -283,7 +283,7 @@ public class CSVUtils {
                     lineData += Constants.COMMA + record[col];
                 }
 
-                utils.writeToCSVFromSingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
+                utils.writeToCSVBySingleLine(outputFilePath, "", lineData, Constants.CHARSET_UTF_8, Boolean.TRUE);
             }
         }
     }
