@@ -25,6 +25,7 @@ BOBB-254            中文字幕
 CARIB_092113-437    中文字幕
 CARIB 112021-001    中文字幕
 CAWD-432            中文字幕
+CEMD-260            中文字幕
 CHRV-067            中文字幕
 CJOD-322            中文字幕
 CJOD-328            中文字幕
@@ -34,7 +35,7 @@ CLUB-419            中文字幕
 CMD-026             中文字幕
 DCV-155             中文字幕
 DIY-100             856 * 480, 去水印
-DLDSS-138           去水印
+DTT-051             中文字幕
 FAA-219             中文字幕, 分辨率低
 FC2-858528          中文字幕
 FC2-999863          中文字幕
@@ -44,12 +45,16 @@ HEYZO-0505          中文字幕
 HMPD-10042          中文字幕
 IPX-686             中文字幕
 IPX-823             中文字幕
+IPX-841             中文字幕
 IPX-926             中文字幕
+IPX-959             中文字幕
 IPZ-207             中文字幕
 JAC-133             中文字幕
 JAN-005             720 * 406, 中文字幕
 JAN-020             中文字幕
+JKW-025             中文字幕
 JUFD-621            中文字幕
+JUFE-115            中文字幕
 JUFE-245            中文字幕
 JUFE-368            中文字幕
 JUL-404             中文字幕
@@ -58,6 +63,7 @@ KATU-041            中文字幕
 KATU-062            中文字幕
 KAVR-121            分辨率低
 KNMB-011            中文字幕
+KSAT-037            中文字幕
 LULU-109            中文字幕
 LUXU-942            中文字幕
 LUXU-943            中文字幕
@@ -69,20 +75,28 @@ LUXU-1170           1280 * 720, 中文字幕, 去水印
 LUXU-1324           1280 * 720
 LUXU-1407           1280 * 720
 LUXU-1475           中文字幕
+LUXU-1611           中文字幕
+LUXU-1634           中文字幕
 LXVS-018(LUXU-457)  中文字幕
 LXVS-044(LUXU-873)  中文字幕
 MAAN-579            1280 * 720, 中文字幕
 MIAA-500            中文字幕
+MIAA-732            中文字幕
 MIAD-794            中文字幕
-MIDD-685            720 * 396, 中文字幕
+MIDD-685            中文字幕
 MIDE-476            中文字幕
 MIDE-612            中文字幕, 去水印
 MIDE-925            中文字幕
 MIDE-941            中文字幕
 MIDE-951            中文字幕
 MIDE-963            中文字幕
+MIDE-965            中文字幕
+MIDV-076            中文字幕
+MIDV-154            中文字幕
+MIDV-160            中文字幕
 MMND-128            中文字幕
 MSFH-002            中文字幕
+MSFH-014            中文字幕
 MVSD-396            中文字幕
 MVSD-466            中文字幕
 NHDTA-662           中文字幕
@@ -92,24 +106,32 @@ ORE-754             1280 * 720
 PGD-795             中文字幕
 PKPD-141            中文字幕
 PPPE-005            中文字幕
+PPPE-081            中文字幕
 PPT-062             中文字幕
 PRED-121            中文字幕
 PRED-352            中文字幕
 PRED-368            中文字幕
+PRED-408            中文字幕
 REAL-723            中文字幕
-SAMA-884            720 * 396, 中文字幕
+SAMA-884            中文字幕
 SGA-113             中文字幕
 SHH-038             中文字幕
+SIRO-4943           中文字幕
+SIRO-4960           中文字幕, 水印
 SOE-982             中文字幕
 SSIS-005            中文字幕
 SSIS-059            中文字幕
 SSIS-139            中文字幕
 SSIS-177            中文字幕
+SSIS-441            中文字幕
+SSIS-500            中文字幕
 STARS-061           中文字幕
 STARS-072           中文字幕
 STARS-105           中文字幕
 STARS-316           中文字幕
 STARS-555           中文字幕
+STARS-607           中文字幕
+STARS-678           中文字幕
 TIKB-116            中文字幕
 TKOL-002            中文字幕
 TOTTE-045           中文字幕
@@ -124,67 +146,68 @@ YAHO-012            中文字幕
 YST-144             中文字幕
 
 =============期待==============
-ABW-293
-AWB-295
-ABW-300
-ABW-301
-ABW-303
-APNS-301
-ARA-550
-BF-676
-BNST-058
-CAWD-443
-CEMD-248
-CEMD-251
-CEMD-260
-DBER-168
-DDHP-012
-DLDSS-139
-EKDV-696
-FSDSS-497
-FSDSS-511
-FSDSS-515
-FSDSS-519
-FSDSS-523
-FSDSS-524
-GANA-2777
-GVH-466
-GVH-485
-HNDB-228
-HUNTB-416
-IPX-959
-ISRD-018
-JUFE-435
-JUFE-436
-JUQ-141
-JUQ-142
-JUQ-156
-KAMEF-020
-KBI-092
-KING-113
-KNMB-040
-LUXU-1626
-LUXU-1641
-MADM-162
-MDBK-268
-MFC-221
-MOPT-022
-MIAA-732
-MIDV-227
-NTK-758
-OTIM-125
-REBD-699
-ROYD-111
-SCPX-461
-SKMJ-336
-SSIS-582
-SSIS-590
-STARS-622
-STARS-717
-STARS-733
-STCV-191
-TEN-044
-WPSL-224
-WZEN-062
+ABW-316
+ABW-317
+BBAN-398
+BOBB-361
+CLO-108
+DAM-020
+DASS-096
+DCV-214
+DDH-136
+DDH-142
+DLDSS-159
+DVAJ-603
+FCT-061
+FSDSS-541
+GANA-2790
+IPX-964
+JAC-150
+JAC-154
+JUFE-441
+JYMA-029
+KNB-229
+LUXU-1617
+LUXU-1642
+MAAN-829
+MAAN-830
+MBRBA-098
+MBYD-374
+MXGS-1277
+MEYD-794
+MGOLD-011
+MGOLD-012
+MIAA-727
+MIAA-776
+MIAA-780
+MIDV-246
+MISM-255
+MIUM-865
+MLA-100
+MUCD-269
+MVSD-534
+NGOD-186
+OFJE-393
+ONSG-060
+OTIM-132
+ROYD-114
+SDAB-237
+SORA-438
+SSIS-647
+STARS-722
+STARS-724
+STARS-728
+STARS-740
+STARS-744
+STARS-758
+STARS-760
+STARS-769
+STCV-197
+STCV-200
+STCV-205
+STCV-207
+SY-197
+ZOCM-052
 
-JKW-025
+MEYD-793  中文
+MIDV-267    中文
