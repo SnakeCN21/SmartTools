@@ -18,10 +18,8 @@ import java.nio.charset.StandardCharsets;
 @Configuration
 @Slf4j
 public class HttpConfigure {
-    private static final Integer connectTimeoutInMillis = 600 * 1000; //最初是15秒
-
+    private static final Integer connectTimeoutInMillis = 60 * 1000; //最初是15秒
     private static final Integer readTimeoutInMillis = 60 * 1000;
-
     private static final Integer connectPoolSize = 120;
 
     private HttpClientConnectionManager poolingConnectionManager() {

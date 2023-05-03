@@ -22,10 +22,7 @@ import org.springframework.stereotype.Service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -115,6 +112,13 @@ public class PorntoolsService {
                 retBody = util.getRespByStr(Constant.JAVDB_HEADERS, MediaType.APPLICATION_XHTML_XML, HttpMethod.GET, null, url, Constant.JAVDB_REQUEST_FACTORY);
                 if (retBody != null && !retBody.isEmpty()) {
                     httpRespList.add(retBody);
+                }
+
+                // 加入延迟设定, 避免请求过于频繁
+                try {
+                    Thread.sleep((new Random().nextInt(Constant.HTTP_REQUEST_RANDOM_SLEEP_TIME) + Constant.HTTP_REQUEST_MIN_SLEEP_TIME) * 1000);
+                } catch (InterruptedException e) {
+                    log.debug(e.getMessage(), e);
                 }
             }
         }
