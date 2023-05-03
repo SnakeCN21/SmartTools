@@ -1,0 +1,23 @@
+spring:
+  servlet:
+    multipart:
+    max-file-size: 100MB
+    max-request-size: 100MB
+  profiles:
+    active: dev
+  application:
+    name: smarttools
+#mybatis:
+#  mapper-locations: classpath:mapper/*.xml
+#  configuration:
+#    map-underscore-to-camel-case: true
+#    default-enum-type-handler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+
+log:
+  path: ../logs
+  moduleName: ${spring.application.name}
+  level: debug
+logging:
+  config: classpath:logback-spring.xml
+  level:
+    com.snake: debug
