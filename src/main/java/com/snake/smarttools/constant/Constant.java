@@ -15,25 +15,6 @@ import java.util.Locale;
 @Component
 @Slf4j
 public class Constant {
-    public static final String FILE_SEPARATOR = "/";
-    public static final String DOT = ".";
-    public static final String COMMA = ",";
-    public static final String SEMICOLON = ";";
-
-    public static final String CHARSET_UTF_8 = "UTF-8";
-    public static final String CHARSET_GBK = "GBK";
-
-    public static final String SPACE_SEPARATOR = " ";
-
-    public static final String UNDERSCORE = "_";
-    public static final String HYPHEN = "-";
-    public static final String SPACE_AND_HYPHEN = " - ";
-
-    public static final String LEFT_PARENTHESES = "(";
-    public static final String RIGHT_PARENTHESES = ")";
-
-    public static final String CARRIAGE_RETURN_TO_LINE = "\r\n";
-
     /******************************************************* Porntools start *******************************************************/
     public static final String JAV_CODE = "jav_code";
     public static final String EXPIRES_DATE_FORMAT = "expires_date_format";
@@ -60,22 +41,10 @@ public class Constant {
     // 带中文字幕的 Jav Code 列表
     public static final String CHINESE_SUBTITLES_JAV_CODE_LIST = "chineseSubtitlesJavCodeList";
 
-    // 判断当前影片的 <资源状态>
-    // 含中字磁鏈: is-warning
-    // 含磁鏈: is-success
-    // 今日新種: is-info
-    public static final String CHINESE_SUBTITLES_SPAN_TAG = "is-warning";
-    public static final String DOWNLOADABLE_SPAN_TAG = "is-success";
-
     // 影片的 <资源状态>
     public static final String RESOURCE_STATUS = "resourceStatus";
     // 影片的 <发布日期>
     public static final String RELEASE_DATE = "releaseDate";
-
-    // 0: 没有磁链; 1: 有磁链; 2: 有中文磁链
-    public static final Integer NO_RESOURCES = 0;
-    public static final Integer HAS_DOWNLOAD_RESOURCES = 1;
-    public static final Integer HAS_CHINESE_SUBTITLES_RESOURCES = 2;
 
     /******************************************************* Porntools end *******************************************************/
 

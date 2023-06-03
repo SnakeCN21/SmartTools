@@ -55,9 +55,12 @@ public class PorntoolsController {
         // 将结果写入文件
         porntoolsService.setJavCodeList(javCodeObj);
 
-        log.info("PorntoolsController.taskStart() 总用时: " + util.calculatingTimeDiff(System.nanoTime() - startTime));
+        StringBuilder sb = new StringBuilder();
+        sb.append("PorntoolsController.taskStart() 总用时: ").append(util.calculatingTimeDiff(System.nanoTime() - startTime));
+        log.info(sb.toString());
+
         log.info("PorntoolsController.taskStart() 执行完毕");
-        return ResponseData.success();
+        return ResponseData.success(sb.toString());
     }
 
 }

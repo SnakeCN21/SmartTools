@@ -3,6 +3,7 @@ package com.snake.smarttools.utils;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.snake.smarttools.constant.enums.SpecialCharacterEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -56,6 +57,7 @@ public class Util {
             retEntity = restTemplate.exchange(url, httpMethod, httpEntity, String.class);
         } catch (RestClientException | UnsupportedEncodingException e) {
             log.error("请求接口失败! url = " + url, e);
+            return null;
         }
         return retEntity.getBody();
     }
@@ -89,6 +91,7 @@ public class Util {
             retEntity = restTemplate.exchange(url, httpMethod, httpEntity, JSONObject.class);
         } catch (RestClientException | UnsupportedEncodingException e) {
             log.error("请求接口失败! url = " + url, e);
+            return null;
         }
         return retEntity.getBody();
     }
@@ -160,6 +163,37 @@ public class Util {
             }
         }
         return httpEntity;
+    }
+
+    /**
+     * 将 str 按照 character 进行 split
+     *
+     * @param str       - 原字符串
+     * @param character - SpecialCharacterEnum
+     */
+    public String[] split(String str, SpecialCharacterEnum character) {
+        return str.split(character.getCharacter());
+    }
+
+    /**
+     * 判断 str 是否包含 character
+     *
+     * @param str       - 原字符串
+     * @param character - SpecialCharacterEnum
+     */
+    public Boolean contains(String str, SpecialCharacterEnum character) {
+        return str.contains(character.getCharacter());
+    }
+
+    /**
+     * 将 str 中 oldChar 替换为 newChar
+     *
+     * @param str     - 原字符串
+     * @param oldChar - SpecialCharacterEnum
+     * @param newChar - SpecialCharacterEnum
+     */
+    public String replace(String str, SpecialCharacterEnum oldChar, SpecialCharacterEnum newChar) {
+        return str.replace(oldChar.getCharacter(), newChar.getCharacter());
     }
 
     /**

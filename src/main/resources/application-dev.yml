@@ -9,4 +9,4 @@ constants:
   # 待写入中文字幕的 Jav Code
   jav_code_write_file: ./porntools/JavCode 检测结果.txt
   # 发布日期过滤器, 用于判断是否 releaseDate + filter < now. 单位: Y-年; M-月; D-天, 用-相连
-  release_date_filter: 1M
+  release_date_filter: 14D

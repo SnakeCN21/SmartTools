@@ -6,6 +6,9 @@ import cn.hutool.core.io.file.FileReader;
 import cn.hutool.core.io.file.FileWriter;
 import com.alibaba.fastjson.JSONObject;
 import com.snake.smarttools.constant.Constant;
+import com.snake.smarttools.constant.enums.JavDBResourceStatusEnum;
+import com.snake.smarttools.constant.enums.JavDBSpanTagEnum;
+import com.snake.smarttools.constant.enums.SpecialCharacterEnum;
 import com.snake.smarttools.utils.Util;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -19,8 +22,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -46,32 +47,37 @@ public class PorntoolsService {
         List<String> javCodeList = new ArrayList<>();
         FileReader fileReader = new FileReader(javCodeReadFile);
 
-        String lineString = null;
-        int line = 1;
-        try (BufferedReader reader = new BufferedReader(fileReader.getReader())) {
-            // 一次读入一行, 直到读入 null, 即文件结束
-            while (StringUtils.isNotBlank(lineString = reader.readLine())) {
-                String[] temp = lineString.split(Constant.SPACE_SEPARATOR);
-                String javCode = temp[0];
+        List<String> lines = fileReader.readLines();
+        String lineStr = null;
 
-                if (javCode.contains(Constant.UNDERSCORE) || javCode.contains(Constant.HYPHEN)) {
-                    if (javCode.contains(Constant.LEFT_PARENTHESES) || javCode.contains(Constant.RIGHT_PARENTHESES)) {
-                        javCode = javCode.replace(Constant.LEFT_PARENTHESES, Constant.SPACE_SEPARATOR);
-                        javCode = javCode.replace(Constant.RIGHT_PARENTHESES, Constant.SPACE_SEPARATOR);
+        String[] temp = null;
+        String javCode = null;
+        String[] temp1 = null;
 
-                        String[] temp1 = javCode.split(Constant.SPACE_SEPARATOR);
+        for (int i = 0; i < lines.size(); i++) {
+            lineStr = lines.get(i);
+            if (StringUtils.isNotBlank(lineStr)) {
+                try {
+                    temp = util.split(lineStr, SpecialCharacterEnum.SPACE_SEPARATOR);
+                    javCode = temp[0];
 
-                        javCodeList.add(temp1[0].toUpperCase(Locale.ENGLISH));
-                        javCodeList.add(temp1[1].toUpperCase(Locale.ENGLISH));
-                    } else {
-                        javCodeList.add(javCode.toUpperCase(Locale.ENGLISH));
+                    if (util.contains(javCode, SpecialCharacterEnum.UNDERSCORE) || util.contains(javCode, SpecialCharacterEnum.HYPHEN)) {
+                        if (util.contains(javCode, SpecialCharacterEnum.LEFT_PARENTHESES) || util.contains(javCode, SpecialCharacterEnum.RIGHT_PARENTHESES)) {
+                            javCode = util.replace(javCode, SpecialCharacterEnum.LEFT_PARENTHESES, SpecialCharacterEnum.SPACE_SEPARATOR);
+                            javCode = util.replace(javCode, SpecialCharacterEnum.RIGHT_PARENTHESES, SpecialCharacterEnum.SPACE_SEPARATOR);
+
+                            temp1 = util.split(javCode, SpecialCharacterEnum.SPACE_SEPARATOR);
+
+                            javCodeList.add(temp1[0].toUpperCase(Locale.ENGLISH));
+                            javCodeList.add(temp1[1].toUpperCase(Locale.ENGLISH));
+                        } else {
+                            javCodeList.add(javCode.toUpperCase(Locale.ENGLISH));
+                        }
                     }
+                } catch (Exception e) {
+                    log.debug(e.getMessage() + ", Line Number: " + i, e);
                 }
-
-                line++;
             }
-        } catch (IOException e) {
-            log.debug(e.getMessage() + ", Line Number: " + line, e);
         }
 
         return javCodeList;
@@ -142,15 +148,15 @@ public class PorntoolsService {
         for (int i = 0; i < javCodeList.size(); i++) {
             retObj = parseJavDBHTML(javCodeList.get(i), httpRespList.get(i));
 
-            Integer resourceStatus = retObj.getInteger(Constant.RESOURCE_STATUS);
+            JavDBResourceStatusEnum resourceStatus = retObj.getObject(Constant.RESOURCE_STATUS, JavDBResourceStatusEnum.class);
             String releaseDate = retObj.getString(Constant.RELEASE_DATE);
 
             switch (resourceStatus) {
-                case 1:
-                    downloadableJavCodeList.add(javCodeList.get(i) + Constant.SPACE_AND_HYPHEN + releaseDate);
+                case HAS_DOWNLOAD_RESOURCES:
+                    downloadableJavCodeList.add(javCodeList.get(i) + SpecialCharacterEnum.SPACE_AND_HYPHEN.getCharacter() + releaseDate);
                     break;
-                case 2:
-                    chineseSubtitlesJavCodeList.add(javCodeList.get(i) + Constant.SPACE_AND_HYPHEN + releaseDate);
+                case HAS_CHINESE_SUBTITLES_RESOURCES:
+                    chineseSubtitlesJavCodeList.add(javCodeList.get(i) + SpecialCharacterEnum.SPACE_AND_HYPHEN.getCharacter() + releaseDate);
                     break;
             }
         }
@@ -170,7 +176,7 @@ public class PorntoolsService {
     public JSONObject parseJavDBHTML(String javCode, String httpResp) {
         JSONObject retObj = new JSONObject();
 
-        Integer resourceStatus = Constant.NO_RESOURCES;
+        JavDBResourceStatusEnum resourceStatus = JavDBResourceStatusEnum.NO_RESOURCES;
         String releaseDate = "";
 
         if (!httpResp.isEmpty()) {
@@ -201,14 +207,14 @@ public class PorntoolsService {
                             // 获取影片的附加信息
                             Elements addons = item.getElementsByClass("has-addons");
                             if (!addons.isEmpty()) {
-                                Elements isDownloadableSpan = Objects.requireNonNull(addons.first()).getElementsByClass(Constant.DOWNLOADABLE_SPAN_TAG);
-                                if (!isDownloadableSpan.isEmpty()) {
-                                    resourceStatus = Constant.HAS_DOWNLOAD_RESOURCES;
+                                Elements isChineseSubtitlesSpan = Objects.requireNonNull(addons.first()).getElementsByClass(JavDBSpanTagEnum.CHINESE_SUBTITLES_SPAN_TAG.getSpanTage());
+                                if (!isChineseSubtitlesSpan.isEmpty()) {
+                                    resourceStatus = JavDBResourceStatusEnum.HAS_CHINESE_SUBTITLES_RESOURCES;
                                     break;
                                 }
-                                Elements isChineseSubtitlesSpan = Objects.requireNonNull(addons.first()).getElementsByClass(Constant.CHINESE_SUBTITLES_SPAN_TAG);
-                                if (!isChineseSubtitlesSpan.isEmpty()) {
-                                    resourceStatus = Constant.HAS_CHINESE_SUBTITLES_RESOURCES;
+                                Elements isDownloadableSpan = Objects.requireNonNull(addons.first()).getElementsByClass(JavDBSpanTagEnum.DOWNLOADABLE_SPAN_TAG.getSpanTage());
+                                if (!isDownloadableSpan.isEmpty()) {
+                                    resourceStatus = JavDBResourceStatusEnum.HAS_DOWNLOAD_RESOURCES;
                                     break;
                                 }
                             }
@@ -242,34 +248,34 @@ public class PorntoolsService {
 
         FileWriter writer = new FileWriter(javCodeWriteFile);
         if (CollectionUtil.isNotEmpty(duplicateJavCodeList)) {
-            writer.write("以下 JavCode 重复:" + Constant.CARRIAGE_RETURN_TO_LINE);
+            writer.write("以下 JavCode 重复:" + SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
             for (String javCode : duplicateJavCodeList) {
-                writer.append(javCode + Constant.CARRIAGE_RETURN_TO_LINE);
+                writer.append(javCode + SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
             }
-            writer.append(Constant.CARRIAGE_RETURN_TO_LINE);
+            writer.append(SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
         }
         if (CollectionUtil.isNotEmpty(chineseSubtitlesJavCodeList)) {
-            writer.append("以下 JavCode 拥有中文磁链:" + Constant.CARRIAGE_RETURN_TO_LINE);
+            writer.append("以下 JavCode 拥有中文磁链:" + SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
             for (String javCodeAndReleaseDate : chineseSubtitlesJavCodeList) {
-                String[] str = javCodeAndReleaseDate.split(Constant.SPACE_AND_HYPHEN);
+                String[] str = util.split(javCodeAndReleaseDate, SpecialCharacterEnum.SPACE_AND_HYPHEN);
                 String javCode = str[0];
                 String releaseDate = str[1];
 
-                writer.append(javCode + Constant.SPACE_AND_HYPHEN + releaseDate + Constant.CARRIAGE_RETURN_TO_LINE);
+                writer.append(javCode + SpecialCharacterEnum.SPACE_AND_HYPHEN.getCharacter() + releaseDate + SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
             }
-            writer.append(Constant.CARRIAGE_RETURN_TO_LINE);
+            writer.append(SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
         }
         if (CollectionUtil.isNotEmpty(downloadableJavCodeList)) {
-            writer.append("以下 JavCode 拥有磁链:" + Constant.CARRIAGE_RETURN_TO_LINE);
+            writer.append("以下 JavCode 拥有磁链:" + SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
             for (String javCodeAndReleaseDate : downloadableJavCodeList) {
-                String[] str = javCodeAndReleaseDate.split(Constant.SPACE_AND_HYPHEN);
+                String[] str = util.split(javCodeAndReleaseDate, SpecialCharacterEnum.SPACE_AND_HYPHEN);
                 String javCode = str[0];
                 String releaseDate = str[1];
 
                 if (isReleaseDateOverFilter(releaseDate) < 0) {
-                    writer.append(javCode + Constant.SPACE_AND_HYPHEN + releaseDate + Constant.CARRIAGE_RETURN_TO_LINE);
+                    writer.append(javCode + SpecialCharacterEnum.SPACE_AND_HYPHEN.getCharacter() + releaseDate + SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
                 } else {
-                    writer.append(javCode + Constant.CARRIAGE_RETURN_TO_LINE);
+                    writer.append(javCode + SpecialCharacterEnum.CARRIAGE_RETURN_TO_LINE.getCharacter());
                 }
             }
         }
@@ -292,9 +298,10 @@ public class PorntoolsService {
      */
     public int isReleaseDateOverFilter(String date) {
         LocalDate releaseDate = LocalDate.parse(date);
-        String[] str = releaseDateFilter.split(Constant.HYPHEN);
+        String[] str = util.split(releaseDateFilter, SpecialCharacterEnum.HYPHEN);
 
         for (String filter : str) {
+            filter = filter.toUpperCase();
             if (filter.contains("Y")) {
                 long num = Long.parseLong(filter.substring(0, filter.indexOf("Y")));
                 releaseDate = releaseDate.plusYears(num);
