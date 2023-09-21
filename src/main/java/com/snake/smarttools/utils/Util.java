@@ -204,16 +204,12 @@ public class Util {
      */
     public String calculatingTimeDiff(long timeDiff) {
         final long day = TimeUnit.NANOSECONDS.toDays(timeDiff);
-
         final long hours = TimeUnit.NANOSECONDS.toHours(timeDiff)
                 - TimeUnit.DAYS.toHours(TimeUnit.NANOSECONDS.toDays(timeDiff));
-
         final long minutes = TimeUnit.NANOSECONDS.toMinutes(timeDiff)
                 - TimeUnit.HOURS.toMinutes(TimeUnit.NANOSECONDS.toHours(timeDiff));
-
         final long seconds = TimeUnit.NANOSECONDS.toSeconds(timeDiff)
                 - TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(timeDiff));
-
         final long ms = TimeUnit.NANOSECONDS.toMillis(timeDiff)
                 - TimeUnit.SECONDS.toMillis(TimeUnit.NANOSECONDS.toSeconds(timeDiff));
 

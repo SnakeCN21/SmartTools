@@ -26,12 +26,12 @@ public class PorntoolsController {
     /**
      * 任务的流程如下:
      * <ol>
-     *     <li>读取 txt 文件</li>
-     *     <li>解析 txt 文件, 然后按行读取内容</li>
+     *     <li>读取 JavCode.txt 文件</li>
+     *     <li>解析 JavCode.txt 文件, 然后按行读取内容</li>
      *     <li>经过一些清洗之后获得真正的 JavCode</li>
      *     <li>依次将这些 JavCode 组装成 Http Request, 并进行请求</li>
      *     <li>解析返回的 Http Response, 判断当前 JavCode 是否 包含磁链 或 中文磁链</li>
-     *     <li>将所有 JavCode 都检索完毕之后, 将结果写入到一个新 txt 文件中</li>
+     *     <li>将所有 JavCode 都检索完毕之后, 将结果写入到一个新 JavCode 检测结果.txt 文件中</li>
      * </ol>
      */
     @GetMapping("/taskStart")
