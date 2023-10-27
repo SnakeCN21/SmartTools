@@ -116,7 +116,7 @@ public class Util {
         }
         if (mediaType != null) {
             headers.setContentType(mediaType);
-            headers.setAccept(Arrays.asList(MediaType.TEXT_HTML, MediaType.APPLICATION_XHTML_XML, MediaType.APPLICATION_XML));
+            headers.setAccept(Arrays.asList(MediaType.TEXT_HTML, MediaType.APPLICATION_XHTML_XML, MediaType.APPLICATION_XML, MediaType.ALL));
         }
         return headers;
     }
