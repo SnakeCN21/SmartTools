@@ -18,7 +18,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -115,7 +114,7 @@ public class PorntoolsService {
         String retBody = null;
         if (CollectionUtil.isNotEmpty(javCodeUrlList)) {
             for (String url : javCodeUrlList) {
-                retBody = util.getRespByStr(Constant.JAVDB_HEADERS, MediaType.APPLICATION_XHTML_XML, HttpMethod.GET, null, url, Constant.JAVDB_REQUEST_FACTORY);
+                retBody = util.httpGet(MediaType.APPLICATION_XHTML_XML, MediaType.TEXT_HTML, url, Constant.JAVDB_HEADERS, null, Constant.JAVDB_REQUEST_FACTORY);
                 if (retBody != null && !retBody.isEmpty()) {
                     httpRespList.add(retBody);
                 }
@@ -280,12 +279,7 @@ public class PorntoolsService {
             }
         }
 
-        log.info("\n********************************************************************\n"
-                + "文件 " + javCodeWriteFile + " 写入完毕.\n"
-                + "共整理了 " + chineseSubtitlesJavCodeList.size() + " 个拥有中文磁链的 JavCode, 以及 " + downloadableJavCodeList.size() + " 个拥有磁链的 JavCode.\n"
-                + "PorntoolsService.setJavCodeList() 总用时: " + util.calculatingTimeDiff(System.nanoTime() - startTime) + "\n"
-                + "********************************************************************"
-        );
+        log.info("\n********************************************************************\n" + "文件 " + javCodeWriteFile + " 写入完毕.\n" + "共整理了 " + chineseSubtitlesJavCodeList.size() + " 个拥有中文磁链的 JavCode, 以及 " + downloadableJavCodeList.size() + " 个拥有磁链的 JavCode.\n" + "PorntoolsService.setJavCodeList() 总用时: " + util.calculatingTimeDiff(System.nanoTime() - startTime) + "\n" + "********************************************************************");
 
         log.info("PorntoolsService.setJavCodeList() 执行完毕.");
     }

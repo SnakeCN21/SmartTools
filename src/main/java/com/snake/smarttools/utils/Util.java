@@ -29,28 +29,78 @@ public class Util {
     private RestTemplate restTemplate;
 
     /**
+     * 向外部提交 Http GET 请求, Content-Type: application/json;charset=UTF-8; Accept: application/json, all
+     *
+     * @param url        - 请求的 url 地址
+     * @param headersObj - Headers(选填)
+     * @param bodyObj    - Body 体(选填)
+     */
+    public String httpGet(String url, JSONObject headersObj, JSONObject bodyObj) {
+        return http(MediaType.APPLICATION_JSON_UTF8, null, HttpMethod.GET, url, headersObj, bodyObj, null);
+    }
+
+    /**
+     * 向外部提交 Http GET 请求
+     *
+     * @param contentType    - Header Content-Type
+     * @param acceptType     - Header Accept-Type(选填)
+     * @param url            - 请求的 url 地址
+     * @param headersObj     - Headers(选填)
+     * @param bodyObj        - Body 体(选填)
+     * @param requestFactory - SimpleClientHttpRequestFactory(选填)
+     */
+    @Retryable(value = RestClientException.class, maxAttempts = 3, // 最大重试次数
+            backoff = @Backoff(delay = 5000L, multiplier = 2))
+    public String httpGet(MediaType contentType, MediaType acceptType, String url, JSONObject headersObj, JSONObject bodyObj, SimpleClientHttpRequestFactory requestFactory) {
+        return http(contentType, acceptType, HttpMethod.GET, url, headersObj, bodyObj, requestFactory);
+    }
+
+    /**
+     * 向外部提交 Http POST 请求, Content-Type: application/json;charset=UTF-8; Accept: application/json, all
+     *
+     * @param url        - 请求的 url 地址
+     * @param headersObj - Headers(选填)
+     * @param bodyObj    - Body 体(选填)
+     */
+    public String httpPost(String url, JSONObject headersObj, JSONObject bodyObj) {
+        return http(MediaType.APPLICATION_JSON_UTF8, null, HttpMethod.POST, url, headersObj, bodyObj, null);
+    }
+
+    /**
+     * 向外部提交 Http POST 请求
+     *
+     * @param contentType    - Header Content-Type
+     * @param acceptType     - Header Accept-Type(选填)
+     * @param url            - 请求的 url 地址
+     * @param headersObj     - Headers(选填)
+     * @param bodyObj        - Body 体(选填)
+     * @param requestFactory - SimpleClientHttpRequestFactory(选填)
+     */
+    @Retryable(value = RestClientException.class, maxAttempts = 3, // 最大重试次数
+            backoff = @Backoff(delay = 5000L, multiplier = 2))
+    public String httpPost(MediaType contentType, MediaType acceptType, String url, JSONObject headersObj, JSONObject bodyObj, SimpleClientHttpRequestFactory requestFactory) {
+        return http(contentType, acceptType, HttpMethod.POST, url, headersObj, bodyObj, requestFactory);
+    }
+
+    /**
      * 向外部提交 Http 请求
      *
-     * @param headersObj     - Headers (选填)
-     * @param mediaType      - MediaType (选填)
-     * @param url            - 请求的 url 地址
+     * @param contentType    - Header Content-Type
+     * @param acceptType     - Header Accept-Type(选填)
      * @param httpMethod     - Http 请求方式
+     * @param url            - 请求的 url 地址
+     * @param headersObj     - Headers(选填)
      * @param bodyObj        - Body 体(选填)
-     * @param requestFactory - SimpleClientHttpRequestFactory 体(选填)
+     * @param requestFactory - SimpleClientHttpRequestFactory
      */
-    @Retryable(value = RestClientException.class,
-            maxAttempts = 3, // 最大重试次数
-            backoff = @Backoff(delay = 5000L, multiplier = 2))
-    public String getRespByStr(JSONObject headersObj, MediaType mediaType, HttpMethod httpMethod, JSONObject bodyObj, String url, SimpleClientHttpRequestFactory requestFactory) {
+    public String http(MediaType contentType, MediaType acceptType, HttpMethod httpMethod, String url, JSONObject headersObj, JSONObject bodyObj, SimpleClientHttpRequestFactory requestFactory) {
         ResponseEntity<String> retEntity = null;
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> httpEntity = null;
 
         try {
-            headers = getHttpHeaders(headers, headersObj, mediaType);
-            httpEntity = getHttpEntity(httpEntity, httpMethod, bodyObj, url, headers);
+            HttpHeaders headers = setHttpHeaders(contentType, acceptType, headersObj);
+            HttpEntity httpEntity = setHttpEntity(httpMethod, url, headers, bodyObj);
 
-            if (requestFactory != null) {
+            if (Objects.nonNull(requestFactory)) {
                 restTemplate.setRequestFactory(requestFactory);
             }
 
@@ -63,81 +113,53 @@ public class Util {
     }
 
     /**
-     * 向外部提交 Http 请求
-     *
-     * @param headersObj     - Headers (选填)
-     * @param mediaType      - MediaType (选填)
-     * @param httpMethod     - Http 请求方式
-     * @param bodyObj        - Body 体(选填)
-     * @param url            - 请求的 url 地址
-     * @param requestFactory - SimpleClientHttpRequestFactory 体(选填)
-     */
-    @Retryable(value = RestClientException.class,
-            maxAttempts = 3, // 最大重试次数
-            backoff = @Backoff(delay = 5000L, multiplier = 2))
-    public JSONObject getRespByJson(JSONObject headersObj, MediaType mediaType, HttpMethod httpMethod, JSONObject bodyObj, String url, SimpleClientHttpRequestFactory requestFactory) {
-        ResponseEntity<JSONObject> retEntity = null;
-        HttpHeaders headers = new HttpHeaders();
-        HttpEntity<String> httpEntity = null;
-
-        try {
-            headers = getHttpHeaders(headers, headersObj, mediaType);
-            httpEntity = getHttpEntity(httpEntity, httpMethod, bodyObj, url, headers);
-
-            if (requestFactory != null) {
-                restTemplate.setRequestFactory(requestFactory);
-            }
-
-            retEntity = restTemplate.exchange(url, httpMethod, httpEntity, JSONObject.class);
-        } catch (RestClientException | UnsupportedEncodingException e) {
-            log.error("请求接口失败! url = " + url, e);
-            return null;
-        }
-        return retEntity.getBody();
-    }
-
-    /**
      * 组装 HttpHeaders
      *
-     * @param headers    - HttpHeaders
-     * @param headersObj - Headers (选填)
-     * @param mediaType  - MediaType (选填)
+     * @param contentType - Header Content-Type
+     * @param acceptType  - Header Accept-Type(选填)
+     * @param headersObj  - Headers(选填)
      */
-    private HttpHeaders getHttpHeaders(HttpHeaders headers, JSONObject headersObj, MediaType mediaType) throws UnsupportedEncodingException {
-        if (headersObj != null && !headersObj.isEmpty()) { // 组装 header
+    private HttpHeaders setHttpHeaders(MediaType contentType, MediaType acceptType, JSONObject headersObj) throws UnsupportedEncodingException {
+        HttpHeaders headers = new HttpHeaders();
+        if (Objects.nonNull(headersObj) && !headersObj.isEmpty()) { //组装 header
             for (Map.Entry<String, Object> entry : headersObj.entrySet()) {
                 String key = URLEncoder.encode(entry.getKey(), "UTF-8");
-                if (entry.getValue() == null) {
+                if (Objects.isNull(entry.getValue())) {
                     continue;
                 }
                 String value = URLEncoder.encode(entry.getValue().toString(), "UTF-8");
                 headers.set(key, value);
             }
         }
-        if (mediaType != null) {
-            headers.setContentType(mediaType);
-            headers.setAccept(Arrays.asList(MediaType.TEXT_HTML, MediaType.APPLICATION_XHTML_XML, MediaType.APPLICATION_XML, MediaType.ALL));
+        headers.setContentType(contentType);
+        List acceptTypeList = new ArrayList<>();
+        if (Objects.nonNull(acceptType)) {
+            acceptTypeList.add(acceptType);
         }
+        acceptTypeList.add(MediaType.APPLICATION_JSON);
+        acceptTypeList.add(MediaType.ALL);
+        headers.setAccept(acceptTypeList);
+
         return headers;
     }
 
     /**
      * 组装 HttpEntity
      *
-     * @param httpEntity - HttpEntity
      * @param httpMethod - Http 请求方式
      * @param url        - 请求的 url 地址
-     * @param bodyObj    - Body 体(选填)
      * @param headers    - HttpHeaders
+     * @param bodyObj    - Body 体(选填)
      */
-    private HttpEntity<String> getHttpEntity(HttpEntity<String> httpEntity, HttpMethod httpMethod, JSONObject bodyObj, String url, HttpHeaders headers) throws UnsupportedEncodingException {
-        if (httpMethod.equals(HttpMethod.GET)) { // GET 请求
-            if (bodyObj != null && !bodyObj.isEmpty()) {
+    private HttpEntity setHttpEntity(HttpMethod httpMethod, String url, HttpHeaders headers, JSONObject bodyObj) throws UnsupportedEncodingException {
+        HttpEntity httpEntity = null;
+        if (httpMethod.equals(HttpMethod.GET)) { //GET 请求
+            if (Objects.nonNull(bodyObj) && !bodyObj.isEmpty()) {
                 url += "?";
                 StringBuilder urlBuilder = new StringBuilder(url);
                 for (Map.Entry<String, Object> entry : bodyObj.entrySet()) {
                     String key = URLEncoder.encode(entry.getKey(), "UTF-8");
-                    if (entry.getValue() == null) {
+                    if (Objects.isNull(entry.getValue())) {
                         continue;
                     }
                     String value = URLEncoder.encode(entry.getValue().toString(), "UTF-8");
@@ -152,14 +174,13 @@ public class Util {
                     }
                     urlBuilder.append(key).append("=").append(value).append("&");
                 }
-                url = urlBuilder.substring(0, urlBuilder.length() - 1);
             }
-            httpEntity = new HttpEntity<>(null, headers);
-        } else if (httpMethod.equals(HttpMethod.POST)) { // POST 请求
-            if (bodyObj != null && !bodyObj.isEmpty()) {
-                httpEntity = new HttpEntity<>(bodyObj.toString(), headers);
+            httpEntity = new HttpEntity(null, headers);
+        } else if (httpMethod.equals(HttpMethod.POST)) { //POST 请求
+            if (Objects.nonNull(bodyObj)) {
+                httpEntity = new HttpEntity(bodyObj, headers);
             } else {
-                httpEntity = new HttpEntity<>(null, headers);
+                httpEntity = new HttpEntity(null, headers);
             }
         }
         return httpEntity;
@@ -204,14 +225,10 @@ public class Util {
      */
     public String calculatingTimeDiff(long timeDiff) {
         final long day = TimeUnit.NANOSECONDS.toDays(timeDiff);
-        final long hours = TimeUnit.NANOSECONDS.toHours(timeDiff)
-                - TimeUnit.DAYS.toHours(TimeUnit.NANOSECONDS.toDays(timeDiff));
-        final long minutes = TimeUnit.NANOSECONDS.toMinutes(timeDiff)
-                - TimeUnit.HOURS.toMinutes(TimeUnit.NANOSECONDS.toHours(timeDiff));
-        final long seconds = TimeUnit.NANOSECONDS.toSeconds(timeDiff)
-                - TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(timeDiff));
-        final long ms = TimeUnit.NANOSECONDS.toMillis(timeDiff)
-                - TimeUnit.SECONDS.toMillis(TimeUnit.NANOSECONDS.toSeconds(timeDiff));
+        final long hours = TimeUnit.NANOSECONDS.toHours(timeDiff) - TimeUnit.DAYS.toHours(TimeUnit.NANOSECONDS.toDays(timeDiff));
+        final long minutes = TimeUnit.NANOSECONDS.toMinutes(timeDiff) - TimeUnit.HOURS.toMinutes(TimeUnit.NANOSECONDS.toHours(timeDiff));
+        final long seconds = TimeUnit.NANOSECONDS.toSeconds(timeDiff) - TimeUnit.MINUTES.toSeconds(TimeUnit.NANOSECONDS.toMinutes(timeDiff));
+        final long ms = TimeUnit.NANOSECONDS.toMillis(timeDiff) - TimeUnit.SECONDS.toMillis(TimeUnit.NANOSECONDS.toSeconds(timeDiff));
 
         StringBuilder sb = new StringBuilder(64);
 
