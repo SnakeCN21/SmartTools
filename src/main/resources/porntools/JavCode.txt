@@ -16,6 +16,7 @@ ABW-184             中文字幕
 ABW-205             中文字幕
 ABW-217             中文字幕
 ABW-284             中文字幕
+AKDL-106            中文字幕
 AKDL-184            中文字幕
 APGH-001            中文字幕
 ARA-510             中文字幕
@@ -31,7 +32,6 @@ CJOD-328            中文字幕
 CJOD-338            中文字幕
 CLUB-180            中文字幕
 CLUB-419            中文字幕
-CMD-026             中文字幕
 DCV-155             中文字幕
 DIY-100             856 * 480, 去水印
 DTT-051             中文字幕
@@ -39,6 +39,8 @@ FAA-219             中文字幕, 分辨率低
 FC2-858528          中文字幕
 FC2-999863          中文字幕
 FC2-1040071         中文字幕
+FSDSS-612           中文字幕
+GANA-2662           中文字幕
 GANA-2760           中文字幕
 HEYZO-0505          中文字幕
 HMPD-10042          中文字幕
@@ -74,6 +76,7 @@ LUXU-1170           1280 * 720, 中文字幕, 去水印
 LUXU-1324           1280 * 720
 LUXU-1407           1280 * 720
 LUXU-1475           中文字幕
+LUXU-1540           中文字幕
 LUXU-1611           中文字幕
 LUXU-1634           中文字幕
 LXVS-018(LUXU-457)  中文字幕
@@ -93,6 +96,10 @@ MIDE-965            中文字幕
 MIDV-076            中文字幕
 MIDV-154            中文字幕
 MIDV-160            中文字幕
+MIDV-184            中文字幕
+MIDV-227            中文字幕
+MIMK-119            中文字幕
+MIZD-314            中文字幕
 MMND-128            中文字幕
 MSFH-002            中文字幕
 MSFH-014            中文字幕
@@ -111,8 +118,8 @@ PRED-121            中文字幕
 PRED-352            中文字幕
 PRED-368            中文字幕
 PRED-408            中文字幕
-REAL-723            中文字幕
 SAMA-884            中文字幕
+SAN-124             中文字幕
 SGA-113             中文字幕
 SHH-038             中文字幕
 SIRO-4943           中文字幕
@@ -144,54 +151,63 @@ YAHO-012            中文字幕
 YST-144             中文字幕
 
 =============期待==============
-ABF-009
-ATID-568
-DASS-185
-DVAJ-622
-EBWH-006
-FMDL-008
-GVH-562
-GVH-564
-IPZZ-087
-JAC-174
-JJDA-039
-JUQ-328
-JUQ-300
-JUQ-333
-JUQ-334
-MFC-254
-MGMQ-116
-MIDV-418
+ABF-052
+ABF-053
+ABF-061
+CAWD-589
+DASS-265
+DASS-300
+EBWH-035
+EBWH-042
+EBWH-046
+EBWH-047
+EBWH-059
+FOCS-166
+GNI-003
+HJMO-629
+HMN-507
+HMN-510
+HONB-332
+IPZZ-148
+JUFE-525
+JUFE-542
+JUQ-452
+JUQ-475
+MEYD-863
+MFCS-096
+MIAB-043
+MIDV-563
+MIDV-564
 MIMK–120
-MIMK-123
-MOON-008
-MXGS-1294
+MIMK-143
+MUDR-244
+MVSD-568
+MVSD-575
+MVSD-577
+NIMA-021
+NOSKN-057
 OFJE-393
-PPPE-143
-SSIS-796
-SSIS-799
-SSIS-804
-SSIS-805
-SSIS-808
-SSIS-810
-SSIS-814
-SSIS-819
-SSIS-852
-WAAA-288
-YUJ-006
+OFJE-424
+PPPE-174
+PPPE-176
+PPPE-178
+PRED-539
+PRED-540
+PRED-541
+PRED-542
+PRED-545
+SAME-086
+SGKI-004
+SSIS-927
+TPPN-244
+VOV-118
+WAAA-327
 
-ADN-409     中文
-ANAN-017    中文
-DASS-155    中文
-DDH-133     中文
-fsdss-612   中文
-GANA-2662   中文
-LUXU-1540   中文
-mide-739    中文
-midv-184    中文
-MIDV-227    中文
-MIMK-119    中文
-MIZD-314    中文
-UNDG-012    中文
-
-AKDL-106    part.1 梨杏夏, 梨杏なつ
+ACHJ-024    中文
+AKDL-251    中文
+APAK-264    中文
+ARA-581     中文
+GDRD-003    中文
+JYMA-039    中文
+KAM-154     中文
+RKI-645     中文
